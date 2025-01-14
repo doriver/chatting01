@@ -5,51 +5,55 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 @Slf4j
 @Component // 클라이언트가 발송한 메시지 받아서 치리해줄 Handler
 public class WebSocketChatHandlerTest extends TextWebSocketHandler {
 
-    public WebSocketChatHandlerTest() {
-        super();
-    }
+    private final Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<>());
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        super.afterConnectionEstablished(session);
-    }
-
-    @Override
-    public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        super.handleMessage(session, message);
+        sessions.add(session);
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        super.handleTextMessage(session, message);
-    }
+        // client에게 받은 메시지
+        String payload = message.getPayload();
+        log.info("payload {}",payload);
 
-    @Override
-    protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
-        super.handleBinaryMessage(session, message);
-    }
-
-    @Override
-    protected void handlePongMessage(WebSocketSession session, PongMessage message) throws Exception {
-        super.handlePongMessage(session, message);
-    }
-
-    @Override
-    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-        super.handleTransportError(session, exception);
+        // 모든 클라이언트에게 메세지 전달
+        for (WebSocketSession s : sessions) {
+            if (s.isOpen()) {
+                s.sendMessage(new TextMessage("Echo: " + payload));
+            }
+        }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        super.afterConnectionClosed(session, status);
+        sessions.remove(session);
     }
 
-    @Override
-    public boolean supportsPartialMessages() {
-        return super.supportsPartialMessages();
-    }
+    /*
+        @Override
+        afterConnectionEstablished(WebSocketSession session)
+
+        handleMessage(WebSocketSession session, WebSocketMessage<?> message)
+
+        handleTextMessage(WebSocketSession session, TextMessage message)
+
+        handleBinaryMessage(WebSocketSession session, BinaryMessage message)
+
+        handlePongMessage(WebSocketSession session, PongMessage message)
+
+        handleTransportError(WebSocketSession session, Throwable exception)
+
+        afterConnectionClosed(WebSocketSession session, CloseStatus status)
+     */
+
 }

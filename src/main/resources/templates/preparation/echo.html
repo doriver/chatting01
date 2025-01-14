@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>websocket echo</title>
+
+
+
+</head>
+<script>
+    function echo() {
+        const socket = new WebSocket('ws://localhost:8090/echo');
+
+        socket.onopen = () => {
+            console.log('connected');
+            socket.send('hello everyone');
+        }
+
+        socket.onmessage = (event) => {
+            console.log('message from server: ' + event.data);
+        }
+
+        socket.onclose = () => {
+            console.log('disconncected. ');
+        }
+    }
+</script>
+<body style="margin: 40px;">
+    <h1>websocket - echo</h1>
+    <button onclick="echo()">전송</button>
+</body>
+</html>
