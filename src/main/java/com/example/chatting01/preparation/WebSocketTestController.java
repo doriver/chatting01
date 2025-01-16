@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/wwss")
 public class WebSocketTestController {
 
-    @GetMapping("/echo")
-    public String echo() {
-        return "preparation/echo";
-    }
     @GetMapping("/echo2")
     public String echo2() {
         return "preparation/echo2";
