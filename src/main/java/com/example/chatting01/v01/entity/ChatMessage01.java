@@ -1,9 +1,6 @@
 package com.example.chatting01.v01.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +19,12 @@ public class ChatMessage01 {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long cmid;
 
+    @ManyToOne
+    @JoinColumn(name = "roomid")
     private GroupChatRoom01 room;
+
+    @ManyToOne
+    @JoinColumn(name = "senderid")
     private User01 sender;
 
     private String message;

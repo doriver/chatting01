@@ -1,9 +1,6 @@
 package com.example.chatting01.v01.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,8 +19,8 @@ public class GroupChatRoom01 {
     private long roomid;
 
     // 단톡방 개설자
-    /* join걸려야할듯
-     */
+    @ManyToOne
+    @JoinColumn(name = "uid")
     private User01 mentor;
 
     // 단톡방 이름

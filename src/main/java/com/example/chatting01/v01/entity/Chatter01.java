@@ -1,9 +1,6 @@
 package com.example.chatting01.v01.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,10 +20,14 @@ public class Chatter01 {
     private long ctrid;
 
     // 소속된 단톡방
+    @ManyToOne
+    @JoinColumn(name = "roomid")
     private GroupChatRoom01 room;
 
     // 참석자 이름
-    private User01 userName;
+    @ManyToOne
+    @JoinColumn(name = "uid")
+    private User01 chatter;
 
     // 입장시간
     private LocalDateTime enterTime;
@@ -35,6 +36,7 @@ public class Chatter01 {
     private LocalDateTime exitTime;
 
     // 참여정도
+    @Enumerated(EnumType.ORDINAL)
     private ChatterAttendance attendance;
 
     // 상태메시지
