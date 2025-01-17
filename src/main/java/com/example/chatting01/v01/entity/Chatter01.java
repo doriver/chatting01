@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.catalina.User;
 
 import java.time.LocalDateTime;
 
@@ -16,16 +17,30 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChatMessage01 {
-
+public class Chatter01 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long cmid;
+    private long ctrid;
 
+    // 소속된 단톡방
     private GroupChatRoom01 room;
-    private User01 sender;
 
-    private String message;
-    private LocalDateTime timestamp;
+    // 참석자 이름
+    private User01 userName;
 
+    // 입장시간
+    private LocalDateTime enterTime;
+
+    // 퇴장시간
+    private LocalDateTime exitTime;
+
+    // 참여정도
+    private ChatterAttendance attendance;
+
+    // 상태메시지
+    private String statusMessage;
+
+    /*
+    나갔다 들어오는 경우, 아직 고려 안함
+     */
 }
