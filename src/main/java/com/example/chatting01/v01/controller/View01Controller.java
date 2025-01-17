@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/v01")
 public class View01Controller {
 
-    @RequestMapping("/home")
+    @RequestMapping("/ex01")
     public String aa() {
-        return "chatting/v01/chatHome01";
+        return "chatting/v01/chatEx01";
     }
 
     @Autowired
@@ -33,7 +33,7 @@ public class View01Controller {
                 .build();
 
         user01Repository.save(uu);
-        return "redirect:/v01/home";
+        return "redirect:/v01/ex01";
     }
 
     @PostMapping("/mentor")
@@ -45,7 +45,7 @@ public class View01Controller {
                 .build();
 
         user01Repository.save(uu);
-        return "redirect:/v01/home";
+        return "redirect:/v01/ex01";
     }
 
 }
