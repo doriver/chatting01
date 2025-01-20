@@ -15,5 +15,19 @@
         <input type="text" name="userName"> <button type="submit">멘토</button>
     </form>
 
+    <h2>유저 목록</h2>
+    <table>
+        <tr>
+            <th>이름</th>
+            <th></th>
+            <th>역할</th>
+        </tr>
+        <tr th:each="user: ${userList}">
+            <td th:text="${user.userName}"></td>
+            <td> ~~ </td>
+            <td th:text="${user.role}"></td>
+        </tr>
+    </table>
+
 </body>
 </html>
