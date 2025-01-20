@@ -30,9 +30,11 @@ public class GroupChatRoom01 {
     private int limitNumber;
 
     // 생성 시간
-    private LocalDateTime createdAt;
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)
+    private LocalDateTime createdAt; // insertable = false 안해주면 db에 null로 들어감, 아마 jpa가 필드 값을 명시적으로 설정하지 않으면 null로 처리해서 그런듯
 
     // 종료 시간
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime endedAt;
 
     // 채팅방에서 에러 발생시, 관련 메시지 담을곳

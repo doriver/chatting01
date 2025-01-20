@@ -50,9 +50,9 @@
             <td th:text="${user.role}"></td>
             <td>
                 <div th:if="${user.role.name() == 'MENTOR'}">
-                    <input type="text" class="roomName" placeholder="단톡방 이름">
-                    <input type="text" class="userLimit" placeholder="인원 제한">
-                    <button class="createRoom">단톡방 생성</button>
+                    <input type="text" th:class="'roomName-' + ${user.uid}" placeholder="단톡방 이름">
+                    <input type="text" th:class="'userLimit-' + ${user.uid}" placeholder="인원 제한">
+                    <button class="createRoom" th:data-user-id="${user.uid}">단톡방 생성</button>
                 </div>
             </td>
         </tr>
@@ -65,8 +65,29 @@
     </form>
     <hr>
     <h2>단톡방 목록</h2>
- </body>
+    <button onclick="loadChatRooms()">채팅방 불러오기</button>
+    <ul id="chatRoomList"></ul>
+
+</body>
 <script>
+    function loadChatRooms() {
+        $.ajax({
+            url: '/v01/api/rooms',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                let chatRoomList = $('#chatRoomList');
+                chatRoomList.empty();  // 기존 목록 초기화
+
+                response.forEach(function(room) {
+                    chatRoomList.append('<li>' + room.mentor.userName + ' - ' + room.roomName + ' - 제한인원: ' + room.limitNumber  + '</li>');
+                });
+            },
+            error: function() {
+                alert('채팅방 정보를 불러오는 데 실패했습니다.');
+            }
+        });
+    }
 
     $(".loginBtn").on("click", function() {
         var userId = $(this).data("user-id");
@@ -88,10 +109,11 @@
     $(".createRoom").on("click", function() {
         var mId = $(this).data("user-id");
 
+        var rr = $(".roomName-" + mId).val();
+        var ul = $(".userLimit-" + mId).val();
         var params = {
-                        "roomName": $(".roomName").val(), "userLimit": $(".userLimit").val()
+                        "roomName": rr, "userLimit": ul
                       }
-
         $.ajax({
             type:"post",
             url:"/v01/api/room/" + mId,
@@ -102,7 +124,7 @@
             error:function(xhr) {
                 let response = xhr.responseJSON;
                 console.log(response);
-                alert("로그인 실패 \n" + response.message);
+                alert("단톡방 생성 실패 \n" + response.message);
             }
         });
     });

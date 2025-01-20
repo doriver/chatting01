@@ -1,5 +1,6 @@
 package com.example.chatting01.v01.controller;
 
+import com.example.chatting01.v01.entity.GroupChatRoom01;
 import com.example.chatting01.v01.entity.Role;
 import com.example.chatting01.v01.entity.User01;
 import com.example.chatting01.v01.repository.GroupChatRoom01Repository;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,7 +29,22 @@ public class ApiController {
 
     @PostMapping("/room/{mid}")
     public void a112323a( @PathVariable("mid") long mid
-            , @RequestParam("roomName") String roomName, @RequestParam("userLimit") String userLimit) {
+            , @RequestParam("roomName") String roomName, @RequestParam("userLimit") int userLimit) {
+        User01 mentor = user01Repository.findById(mid).orElse(null);
 
+        if (mentor != null && mentor.getRole().name() == "MENTOR") {
+            GroupChatRoom01 room = GroupChatRoom01.builder()
+                    .mentor(mentor).roomName(roomName).limitNumber(userLimit)
+                    .build();
+            groupChatRoom01Repository.save(room);
+        } else {
+            // throw new Exception();
+        }
+    }
+
+    @GetMapping("/rooms")
+    public List<GroupChatRoom01> asdf() {
+        List<GroupChatRoom01> roomList = groupChatRoom01Repository.findAll();
+        return roomList;
     }
 }
