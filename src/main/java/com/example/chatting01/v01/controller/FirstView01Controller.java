@@ -26,6 +26,13 @@ public class FirstView01Controller {
         return "chatting/v01/chatEx01";
     }
 
+    @RequestMapping("/chr")
+    public String aachr(Model model, @RequestParam(name="uid") long uid) {
+//        List<User01> userList = user01Repository.findAll();
+//        model.addAttribute("userList", userList);
+        return "chatting/v01/chatRoom01";
+    }
+
 
 
     /*

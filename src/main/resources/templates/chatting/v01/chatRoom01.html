@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- jQuery( JavaScript 라이브러리 ) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <h1>단톡방</h1>
+    <h2 th:if="${session.loginUser}">로그인됨 : [[${session.loginUser.userName}]]</h2>
+
+
+
+</body>
+<script>
+
+    $(".loginBtn").on("click", function() {
+        var userId = $(this).data("user-id");
+
+        $.ajax({
+            type:"get",
+            url:"/v01/api/login/" + userId,
+            success:function(response) { },
+            error:function(xhr) {
+                let response = xhr.responseJSON;
+                console.log(response);
+                alert("로그인 실패 \n" + response.message);
+            }
+        });
+    });
+
+</script>
+</html>

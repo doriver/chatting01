@@ -10,6 +10,7 @@
 <body>
     <h1 th:if="${session.loginUser}">로그인됨 : [[${session.loginUser.userName}]]</h1>
 
+
     <h3>회원 추가</h3>
     <form action="/v01/user" method="post">
         <input type="text" name="userName"> <button type="submit">일반 회원</button>
@@ -34,6 +35,13 @@
         </tr>
     </table>
 
+    <form action="/v01/chr" method="get">
+        <input th:if="${session.loginUser}" type="hidden" name="uid" class="userId" >
+        <input th:if="${session?.loginUser != null}" type="hidden" name="uid" class="userId" th:value="${session.loginUser.uid}">
+        <button type="submit">단톡방 입장</button>
+    </form>
+    <img  th:src="${postWithOthers.writerProfileImage }" width="30" height="30">
+    <img th:if="${postWithOthers.writerProfileImage == null}" src="https://mblogthumb-phinf.pstatic.net/20150203_225/hkjwow_1422965971196EfkMV_JPEG/%C4%AB%C5%E5%C7%C1%BB%E7_31.jpg?type=w210" width="30">
 </body>
 <script>
 
@@ -43,7 +51,9 @@
         $.ajax({
             type:"get",
             url:"/v01/api/login/" + userId,
-            success:function(response) { },
+            success:function(response) {
+                $(".userId").val(userId);
+            },
             error:function(xhr) {
                 let response = xhr.responseJSON;
                 console.log(response);
@@ -51,6 +61,7 @@
             }
         });
     });
+
 
 </script>
 </html>
