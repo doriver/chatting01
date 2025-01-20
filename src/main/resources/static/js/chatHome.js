@@ -47,13 +47,10 @@ function updateChatterList(chatterList) {
 
         row.innerHTML = `
             <td style="text-align: center;">
-                <img src="${chatter.friendProfileUrl}" alt="${chatter.friendUname}" width="40" style="border-radius: 50%">
+                <img alt="참석자 이미지" height="20" width="20" style="border-radius: 50%">
             </td>
             <td>
-                <a href="/chatting/chat/${chatter.friendUid}">
-                    <span style="font-weight: bold; font-size: 0.8rem">${chatter.friendUname}</span>
-                </a><br>
-                <span style="font-size: 0.8rem;">${chatter.message}</span>
+                <span style="font-weight: bold; font-size: 0.8rem">${chatter.friendUname}</span>
             </td>
             <td style="text-align: center;">
                 <span style="font-size: 0.8rem;">
