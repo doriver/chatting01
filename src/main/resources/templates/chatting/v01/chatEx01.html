@@ -36,12 +36,10 @@
     </table>
 
     <form action="/v01/chr" method="get">
-        <input th:if="${session.loginUser}" type="hidden" name="uid" class="userId" >
-        <input th:if="${session?.loginUser != null}" type="hidden" name="uid" class="userId" th:value="${session.loginUser.uid}">
+        <input th:if="${session?.loginUser}" type="hidden" name="uid" class="userId" th:value="${session.loginUser?.uid}">
+        <input th:if="${session?.loginUser == null}" type="hidden" name="uid" class="userId" >
         <button type="submit">단톡방 입장</button>
     </form>
-    <img  th:src="${postWithOthers.writerProfileImage }" width="30" height="30">
-    <img th:if="${postWithOthers.writerProfileImage == null}" src="https://mblogthumb-phinf.pstatic.net/20150203_225/hkjwow_1422965971196EfkMV_JPEG/%C4%AB%C5%E5%C7%C1%BB%E7_31.jpg?type=w210" width="30">
 </body>
 <script>
 
