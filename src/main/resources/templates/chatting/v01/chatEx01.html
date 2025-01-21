@@ -17,7 +17,8 @@
 </head>
 <body>
     <h1 th:if="${session?.loginUser}">로그인됨 : [[${session.loginUser.userName}]]</h1>
-
+    <input th:if="${session?.loginUser}" type="hidden" name="uid" class="userId" th:value="${session.loginUser?.uid}">
+    
     <div class="container">
         <div class="row">
 
@@ -92,15 +93,6 @@
         </div>
     </div>
 
-    <hr>
-    
-
-    <form action="/v01/chr" method="get">
-        <input th:if="${session?.loginUser}" type="hidden" name="uid" class="userId" th:value="${session.loginUser?.uid}">
-        <input th:if="${session?.loginUser == null}" type="hidden" name="uid" class="userId" >
-        <button type="submit">단톡방 입장</button>
-    </form>
-    <hr>
     
 
 </body>

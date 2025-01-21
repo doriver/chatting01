@@ -38,11 +38,11 @@ public class Chatter01 {
     private LocalDateTime exitTime;
 
     // 참여정도
-    @Enumerated(EnumType.ORDINAL)
-    private ChatterAttendance attendance;
+//    @Enumerated(EnumType.ORDINAL)
+//    private ChatterAttendance attendance;
 
     // 상태메시지
-    private String statusMessage;
+//    private String statusMessage;
 
     /*
     나갔다 들어오는 경우, 아직 고려 안함

@@ -25,7 +25,7 @@ public class ChatMessage01 {
 
     @ManyToOne
     @JoinColumn(name = "senderid")
-    private User01 sender;
+    private Chatter01 sender;
 
     private String message;
 

@@ -1,17 +1,19 @@
 
 async function fetchRoomList() {
     try {
+        const loginId = $(".userId").val();
         const response = await fetch(`/v01/api/rooms`);
         if (response.ok) {
             const chatterList = await response.json();
-            updateRoomList(chatterList);
+            updateRoomList(chatterList, loginId);
         }
     } catch (error) {
         console.error('Failed to fetch roomList:', error);
     }
 }
 
-function updateRoomList(roomList) {
+function updateRoomList(roomList, loginId) {
+
     const tableBody = document.querySelector('.table > tbody');
     tableBody.innerHTML = ''; // 기존 내용을 초기화
 
@@ -31,7 +33,7 @@ function updateRoomList(roomList) {
                 </span>
             </td>
             <td>
-                <form action="/v01/api/participant/${room.roomid}/${room.mentor.uid}" 
+                <form action="/v01/api/participant/${room.roomid}/${loginId}" 
                     method="post">
                     <button type="submit"> 단톡 참석 </button>
                 </form>
@@ -50,7 +52,8 @@ $(document).ready(function() {
             type:"get",
             url:"/v01/api/login/" + userId,
             success:function(response) {
-                $(".userId").val(userId);
+                // $(".userId").val(userId);
+                alert(response);
             },
             error:function(xhr) {
                 let response = xhr.responseJSON;

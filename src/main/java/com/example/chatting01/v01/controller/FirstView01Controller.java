@@ -26,7 +26,7 @@ public class FirstView01Controller {
     @Autowired private GroupChatRoom01Repository groupChatRoom01Repository;
 
     /*
-        유저, 단톡방 목록
+        유저, 단톡방 목록 화면
      */
     @RequestMapping("/ex01")
     public String aa(Model model) {
@@ -45,18 +45,18 @@ public class FirstView01Controller {
         if (!room.isEmpty()) {
             List<Chatter01> chatterList = chatter01Repository.findAllByRoomAndExitTime(room.get(), null);
             model.addAttribute("chatterList", chatterList);
+
+            model.addAttribute("room", room.get());
         }
 
-
-//        List<User01> userList = user01Repository.findAll();
-//        model.addAttribute("userList", userList);
         return "chatting/v01/chatRoom01";
     }
 
 
 
     /*
-    프론트에서 form태그 쓰면 브라우저 url이 바뀌어서 redirect해줘야함
+        프론트에서 form태그 쓰면 브라우저 url이 바뀌어서 redirect해줘야함
+        회원가입(user)
      */
     @PostMapping("/user")
     public String aa12 (@RequestParam("userName") String userName) {
@@ -70,6 +70,9 @@ public class FirstView01Controller {
         return "redirect:/v01/ex01";
     }
 
+    /*
+        회원가입(mentor)
+     */
     @PostMapping("/mentor")
     public String aa (@RequestParam("userName") String userName) {
         Role userRole = Role.MENTOR;

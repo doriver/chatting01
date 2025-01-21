@@ -19,53 +19,56 @@
 </head>
 <body>
     <h1>단톡방</h1>
-    <h2 th:if="${session?.loginUser}">로그인됨 : [[${session.loginUser.userName}]]</h2>
+    <h3 th:if="${session?.loginUser}">로그인됨 : [[${session.loginUser.userName}]]</h3>
 
-    <div class="container" style="margin-top:80px">
+    <div class="container" style="margin-top:40px">
         <div class="row">
-            <div class="col-3">
+            <div class="col-1">
                 기존 이미지 자리
             </div>
 
-            <div class="col-6">
-                <main>
-                    <h3><strong>채팅 홈</strong></h3>
-                    <hr>
+            <div class="col-3">
+                <h3><strong>단톡방 참석자 목록</strong></h3>
+                <hr>
+                    <!--
+                        <input type="hidden" id="userId" th:value="${session.sessUid}">
+                        <input type="hidden" id="chattingStatus" th:value="${session.chattingStatus}">
+                        <input type="hidden" id="serverPort" th:value="${session.serverPort}">
+                        <input type="hidden" id="serverIp" th:value="${session.serverIp}">
+                    -->
 
-                    <div class="row">
-                        <div class="col-3"></div>
-                        <div class="col-6">
-                            <!--
-                                <input type="hidden" id="userId" th:value="${session.sessUid}">
-                                <input type="hidden" id="chattingStatus" th:value="${session.chattingStatus}">
-                                <input type="hidden" id="serverPort" th:value="${session.serverPort}">
-                                <input type="hidden" id="serverIp" th:value="${session.serverIp}">
-                            -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td style="width: 30%; text-align: center;">
+                                <div>멘토 이미지</div>
+                            </td>
+                            <td style="width: 50%;">
+                                <span style="font-weight: bold;" th:text="${room.mentor.userName}">멘토 이름</span> <!--  -->
+                                <input type="hidden" id="mentorId" th:value="${room.mentor.uid}"> <!--  -->
+                            </td>
+                            <td style="width: 20%; text-align: right;">
+                                기타등등
+                            </td>
+                        </tr>
+                    </thead>
 
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <td style="width: 12%; text-align: center;">
-                                        <div width="48">멘토 이미지자리</div>
-                                    </td>
-                                    <td style="width: 64%;">
-                                        <span style="font-weight: bold;" >멘토 이름</span> <!-- th:text="${user.uname}" -->
-                                        <input type="hidden" id="userId" > <!-- th:value="${user.uid}" -->
-                                    </td>
-                                    <td style="width: 24%; text-align: right;">
-                                        <i id="statusIcon" class="fa-solid fa-link">연결되있는지 상태</i>
-                                    </td>
-                                </tr>
-                                </thead>
+                    <!-- js파일에 있음, Chatter List( 동적으로 바뀜 ) -->
+                    <tbody>
+                        <tr th:each="user : ${chatterList}">
+                            <td style="text-align: center;"> 참석자 이미지 </td>
+                            <td th:text="${user.chatter.userName}">참석자 이름</td>
+                            <td style="text-align: right;">기타등등</td>
+                        </tr>
+                    </tbody>
 
-                                <!-- js파일에 있음, Chatter List( 동적으로 바뀜 ) -->
-                                <tbody></tbody>
+                </table>
+            </div>
 
-                            </table>
-                        </div>
-                        <div class="col-3"></div>
-                    </div>
-                </main>
+            <div class="col-8">
+                <h3><strong>단톡방: [[${room.roomName}]] , 제한인원 [[${room.limitNumber}]]</strong></h3>
+                <hr>
+
             </div>
         </div>
     </div>

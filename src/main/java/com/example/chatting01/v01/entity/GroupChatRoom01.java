@@ -38,7 +38,7 @@ public class GroupChatRoom01 {
     private LocalDateTime endedAt;
 
     // 채팅방에서 에러 발생시, 관련 메시지 담을곳
-    private String errorMessage;
+//    private String errorMessage;
 
     /*
     삭제할떄 문제 될수도

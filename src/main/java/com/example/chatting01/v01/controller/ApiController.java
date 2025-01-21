@@ -28,9 +28,13 @@ public class ApiController {
 
     @GetMapping("/login/{id}")
     @ResponseBody
-    public void a123a(HttpSession session, @PathVariable("id") long id) {
+    public String a123a(HttpSession session, @PathVariable("id") long id) {
         Optional<User01> loginUser = user01Repository.findById(id);
-        session.setAttribute("loginUser", loginUser.get());
+        if (!loginUser.isEmpty()) {
+            session.setAttribute("loginUser", loginUser.get());
+            return loginUser.get().getUserName();
+        }
+        return "로그인 실패";
     }
 
     @PostMapping("/room/{mid}")
@@ -56,6 +60,9 @@ public class ApiController {
         return roomList;
     }
 
+    /*
+        단톡방 입장하기
+     */
     @PostMapping("/participant/{rid}/{uid}")
     public String aasd323a(@PathVariable("rid") long rid, @PathVariable("uid") long uid
                         , RedirectAttributes reAtr) {
