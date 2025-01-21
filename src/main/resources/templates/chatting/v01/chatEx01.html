@@ -55,25 +55,28 @@
                 </table>
             </div>
 
-            <div class="col-4">
+            <div class="col-6">
                 <h2>단톡방 목록</h2>
                 <button onclick="fetchRoomList()">채팅방 불러오기</button>
                 
                 <table class="table">
                     <thead>
                         <tr>
-                            <td style="width: 24%; text-align: center;">
+                            <td style="width: 20%; text-align: center;">
                                 <div>멘토 이름</div>
                             </td>
-                            <td style="width: 52%;">
+                            <td style="width: 45%;">
                                 <span style="font-weight: bold;" >단톡방 이름</span> <!-- th:text="${user.uname}" -->
                                 <!-- 
 
                                  <input type="hidden" id="userId" > 
                                 th:value="${user.uid}" -->
                             </td>
-                            <td style="width: 24%; text-align: right;">
+                            <td style="width: 20%; text-align: right;">
                                 <div>제한인원</div>
+                            </td>
+                            <td style="width: 20%;">
+                                채팅 참석
                             </td>
                         </tr>
                     </thead>

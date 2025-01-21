@@ -23,14 +23,18 @@ function updateRoomList(roomList) {
                 ${room.mentor.userName}
             </td>
             <td>
-                <a href="">
-                    <span style="font-weight: bold; font-size: 0.8rem">${room.roomName}</span>
-                </a>
+                <span style="font-weight: bold; font-size: 0.8rem">${room.roomName}</span>
             </td>
             <td style="text-align: center;">
                 <span style="font-size: 0.8rem;">
                      ${room.limitNumber}
                 </span>
+            </td>
+            <td>
+                <form action="/v01/api/participant/${room.roomid}/${room.mentor.uid}" 
+                    method="post">
+                    <button type="submit"> 단톡 참석 </button>
+                </form>
             </td>
         `;
         tableBody.appendChild(row);

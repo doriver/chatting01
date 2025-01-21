@@ -30,9 +30,11 @@ public class Chatter01 {
     private User01 chatter;
 
     // 입장시간
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)
     private LocalDateTime enterTime;
 
     // 퇴장시간
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime exitTime;
 
     // 참여정도

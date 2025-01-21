@@ -28,6 +28,8 @@ public class ChatMessage01 {
     private User01 sender;
 
     private String message;
-    private LocalDateTime timestamp;
+
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)
+    private LocalDateTime sendAt;
 
 }
