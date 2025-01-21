@@ -11,52 +11,86 @@
 
     <title>Title</title>
 
+    <link href="/css/chatEx01.css" rel="stylesheet">
+    <script src="/js/chatEx01.js"></script>
+
 </head>
 <body>
     <h1 th:if="${session?.loginUser}">로그인됨 : [[${session.loginUser.userName}]]</h1>
 
     <div class="container">
         <div class="row">
-            <div class="col-5">
-                왜안되냐
-            <div>
+
+            <div class="col-6">
+                <h3>회원 추가</h3>
+                <form action="/v01/user" method="post">
+                    <input type="text" name="userName"> <button type="submit">일반 회원</button>
+                </form>
+                <form action="/v01/mentor" method="post">
+                    <input type="text" name="userName"> <button type="submit">멘토</button>
+                </form>
+                <hr>
+                <h2>유저 목록</h2>
+                <table>
+                    <tr>
+                        <th>이름(클릭하면 로그인됨)</th>
+                       
+                        <th>역할</th>
+                        <th>단톡방 개설</th>
+                    </tr>
+                    <tr th:each="user: ${userList}">
+                        <td>
+                            <button class="loginBtn" th:data-user-id="${user.uid}">[[${user.userName}]]</button>
+                        </td>
+                      
+                        <td th:text="${user.role}"></td>
+                        <td>
+                            <div th:if="${user.role.name() == 'MENTOR'}">
+                                <input type="text" th:class="'roomName-' + ${user.uid}" placeholder="단톡방 이름">
+                                <input type="text" th:class="'userLimit-' + ${user.uid}" placeholder="인원 제한">
+                                <button class="createRoom" th:data-user-id="${user.uid}">단톡방 생성</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
             <div class="col-4">
-                나도 모름
-            <div>
+                <h2>단톡방 목록</h2>
+                <button onclick="fetchRoomList()">채팅방 불러오기</button>
+                
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td style="width: 24%; text-align: center;">
+                                <div>멘토 이름</div>
+                            </td>
+                            <td style="width: 52%;">
+                                <span style="font-weight: bold;" >단톡방 이름</span> <!-- th:text="${user.uname}" -->
+                                <!-- 
+
+                                 <input type="hidden" id="userId" > 
+                                th:value="${user.uid}" -->
+                            </td>
+                            <td style="width: 24%; text-align: right;">
+                                <div>제한인원</div>
+                            </td>
+                        </tr>
+                    </thead>
+
+                    <!-- js파일에 있음, Room List( 동적으로 바뀜 ) -->
+                    <tbody></tbody>
+
+                </table>
+
+                
+            </div>
+
         </div>
     </div>
+
     <hr>
-    <h3>회원 추가</h3>
-    <form action="/v01/user" method="post">
-        <input type="text" name="userName"> <button type="submit">일반 회원</button>
-    </form>
-    <form action="/v01/mentor" method="post">
-        <input type="text" name="userName"> <button type="submit">멘토</button>
-    </form>
-    <hr>
-    <h2>유저 목록</h2>
-    <table>
-        <tr>
-            <th>이름</th>
-            <th></th>
-            <th>역할</th>
-            <th>단톡방 개설</th>
-        </tr>
-        <tr th:each="user: ${userList}">
-            <td>
-                <button class="loginBtn" th:data-user-id="${user.uid}">[[${user.userName}]]</button>
-            </td>
-            <td> ~~ </td>
-            <td th:text="${user.role}"></td>
-            <td>
-                <div th:if="${user.role.name() == 'MENTOR'}">
-                    <input type="text" th:class="'roomName-' + ${user.uid}" placeholder="단톡방 이름">
-                    <input type="text" th:class="'userLimit-' + ${user.uid}" placeholder="인원 제한">
-                    <button class="createRoom" th:data-user-id="${user.uid}">단톡방 생성</button>
-                </div>
-            </td>
-        </tr>
-    </table>
+    
 
     <form action="/v01/chr" method="get">
         <input th:if="${session?.loginUser}" type="hidden" name="uid" class="userId" th:value="${session.loginUser?.uid}">
@@ -64,12 +98,15 @@
         <button type="submit">단톡방 입장</button>
     </form>
     <hr>
-    <h2>단톡방 목록</h2>
-    <button onclick="loadChatRooms()">채팅방 불러오기</button>
-    <ul id="chatRoomList"></ul>
+    
 
 </body>
 <script>
+
+
+
+    /*
+// <ul id="chatRoomList"></ul>
     function loadChatRooms() {
         $.ajax({
             url: '/v01/api/rooms',
@@ -92,46 +129,9 @@
             }
         });
     }
+    */
 
-    $(".loginBtn").on("click", function() {
-        var userId = $(this).data("user-id");
-
-        $.ajax({
-            type:"get",
-            url:"/v01/api/login/" + userId,
-            success:function(response) {
-                $(".userId").val(userId);
-            },
-            error:function(xhr) {
-                let response = xhr.responseJSON;
-                console.log(response);
-                alert("로그인 실패 \n" + response.message);
-            }
-        });
-    });
-
-    $(".createRoom").on("click", function() {
-        var mId = $(this).data("user-id");
-
-        var rr = $(".roomName-" + mId).val();
-        var ul = $(".userLimit-" + mId).val();
-        var params = {
-                        "roomName": rr, "userLimit": ul
-                      }
-        $.ajax({
-            type:"post",
-            url:"/v01/api/room/" + mId,
-            data: params,
-            success:function(response) {
-
-            },
-            error:function(xhr) {
-                let response = xhr.responseJSON;
-                console.log(response);
-                alert("단톡방 생성 실패 \n" + response.message);
-            }
-        });
-    });
+    
 
 
 </script>
