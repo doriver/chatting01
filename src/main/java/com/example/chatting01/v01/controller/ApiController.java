@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,9 +57,10 @@ public class ApiController {
     }
 
     @PostMapping("/participant/{rid}/{uid}")
-    public String aasd323a( @PathVariable("rid") long rid, @PathVariable("uid") long uid) {
-
-
+    public String aasd323a(@PathVariable("rid") long rid, @PathVariable("uid") long uid
+                        , RedirectAttributes reAtr) {
+        // 일단은 단톡방으로 무조건 넘어가는 로직만 있음
+        // 여러가지 경우를 고려해야할수도( 단톡방 없는경우 등 )
 
         GroupChatRoom01 chatRoom = groupChatRoom01Repository.findById(rid).orElse(null);
         User01 participant = user01Repository.findById(uid).orElse(null);
@@ -76,7 +78,7 @@ public class ApiController {
                 // throw new Exception();
             }
         }
-
+        reAtr.addAttribute("rid", rid);
 
         return "redirect:/v01/chr";
     }
