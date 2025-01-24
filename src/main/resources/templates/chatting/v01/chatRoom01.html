@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link href="/css/chatHome.css" rel="stylesheet">
-    <script src="/js/chatHome.js"></script>
+    <link href="/css/chatRoom01.css" rel="stylesheet">
+    <script src="/js/chatRoom01.js"></script>
 
     <title>Title</title>
     <meta charset="UTF-8">
@@ -68,6 +68,31 @@
             <div class="col-8">
                 <h3><strong>단톡방: [[${room.roomName}]] , 제한인원 [[${room.limitNumber}]]</strong></h3>
                 <hr>
+                <button onclick="fetchChatItems()">채팅 메시지들 불러오기</button>
+
+                <div class="chat-window">
+                    <!-- Header -->
+                    <div class="header d-flex justify-content-between py-3">
+                        <div>
+                            <a href="/chatting/home"><i class="fa-solid fa-arrow-left mx-2" style="color: white;"></i></a>
+                            <span style="font-weight: bold;">[[${room.roomName}]]</span>
+                            <input type="hidden" id="recipientId" th:value="${friend.uid}">
+                            <input type="hidden" id="userId" th:value="${user.uid}">
+                            <input type="hidden" id="chattingStatus" th:value="|chat:${friend.uid}|">									
+                            <input type="hidden" id="serverPort" th:value="${session.serverPort}">
+                            <input type="hidden" id="serverIp" th:value="${session.serverIp}">
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-magnifying-glass me-2"></i>
+                            <i class="fa-solid fa-gear me-2"></i>
+                            <i id="statusIcon" class="fa-solid fa-link"></i>
+                        </div>
+                    </div>
+
+                    <!-- Chat Container가 동적으로 바뀜 -->
+                    <div class="chat-container" id="chatContainer"></div>
+
+                </div>
 
             </div>
         </div>
