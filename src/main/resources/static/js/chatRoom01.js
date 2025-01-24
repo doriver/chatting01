@@ -1,4 +1,21 @@
+let socket;
 
+function connect() {
+    socket = new WebSocket('ws://localhost:8080/echo2');
+
+    socket.onopen = () => {
+        console.log('connected');
+    }
+
+    socket.onmessage = (event) => {
+        console.log('message from server: ' + event.data);
+        // stomp를 써야할듯
+    }
+
+    socket.onclose = () => {
+        console.log('disconncected. ');
+    }
+}
 
 
 async function fetchChatItems() {
