@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface Chatter01Repository extends JpaRepository<Chatter01, Long> {
 
-    Optional<Chatter01> findByChatter(User01 chatter);
+    Optional<Chatter01> findByChatterAndRoom(User01 chatter, GroupChatRoom01 room);
 
     List<Chatter01> findAllByRoomAndExitTime(GroupChatRoom01 room, LocalDateTime exitTime);
     // 단톡방 현재 참석자들 가져오는거 : exitTime = null
