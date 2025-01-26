@@ -8,8 +8,8 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 @RequiredArgsConstructor
-@Configuration
-@EnableWebSocket // WebSocket 활성화
+//@Configuration
+//@EnableWebSocket // WebSocket 활성화
 public class WebSocketConfigTest implements WebSocketConfigurer {
 
     private final WebSocketHandler webSocketChatHandlerTest;

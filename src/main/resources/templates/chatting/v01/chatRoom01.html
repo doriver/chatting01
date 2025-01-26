@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link href="/css/chatRoom01.css" rel="stylesheet">
-    <script src="/js/chatRoom01.js"></script>
-
+    
     <title>Title</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,6 +15,10 @@
     <!-- 구글 폰트(Google Fonts)의 "Noto Sans KR" 글꼴을 가져와 적용 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+    
+    <link href="/css/chatRoom01.css" rel="stylesheet">
+    <script src="/js/chatRoom01.js"></script>
     <script>
         window.onload = () => {
             
@@ -36,13 +38,12 @@
             <div class="col-3">
                 <h3><strong>단톡방 참석자 목록</strong></h3>
                 <hr>
+                    <input type="hidden" id="userName" th:value="${session.loginUser.userName}">
                     <!--
-                        <input type="hidden" id="userId" th:value="${session.sessUid}">
                         <input type="hidden" id="chattingStatus" th:value="${session.chattingStatus}">
                         <input type="hidden" id="serverPort" th:value="${session.serverPort}">
-                        <input type="hidden" id="serverIp" th:value="${session.serverIp}">
+                        <input type="hidden" id="serverIp" th:value="${session.serverIp}">   
                     -->
-
                 <table class="table">
                     <thead>
                         <tr>
@@ -74,7 +75,9 @@
             <div class="col-8">
                 <h3><strong>단톡방: [[${room.roomName}]] , 제한인원 [[${room.limitNumber}]]</strong></h3>
                 <hr>
-                <button onclick="fetchChatItems()">채팅 메시지들 불러오기</button>
+                <!--
+                    <button onclick="fetchChatItems()">채팅 메시지들 불러오기</button>
+                -->
 
                 <div class="chat-window">
                     <!-- Header -->
@@ -82,11 +85,6 @@
                         <div>
                             <a href="/chatting/home"><i class="fa-solid fa-arrow-left mx-2" style="color: white;"></i></a>
                             <span style="font-weight: bold;">[[${room.roomName}]]</span>
-                            <input type="hidden" id="recipientId" th:value="${friend.uid}">
-                            <input type="hidden" id="userId" th:value="${user.uid}">
-                            <input type="hidden" id="chattingStatus" th:value="|chat:${friend.uid}|">									
-                            <input type="hidden" id="serverPort" th:value="${session.serverPort}">
-                            <input type="hidden" id="serverIp" th:value="${session.serverIp}">
                         </div>
                         <div>
                             <i class="fa-solid fa-magnifying-glass me-2"></i>
@@ -95,10 +93,37 @@
                         </div>
                     </div>
 
+                    
                     <!-- Chat Container가 동적으로 바뀜 -->
-                    <div class="chat-container" id="chatContainer"></div>
-
+                    <div class="chat-container" id="chatContainer">
+                        
+                    </div>
                 </div>
+
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="connect">WebSocket connection:</label>
+                        <button id="connect" type="submit">Connect</button>
+                        <button id="disconnect" type="submit" >Disconnect</button>
+                    </div>
+                </form>
+
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="message">메시지 입력하세요</label>
+                        <input type="text" id="message" placeholder="Your message here...">
+                    </div>
+                    <button id="send" type="submit">Send</button>
+                </form>
+                <table id="conversation">
+                    <thead>
+                    <tr>
+                        <th>메시지</th>
+                    </tr>
+                    </thead>
+                    <tbody id="greetings">
+                    </tbody>
+                </table>
 
             </div>
         </div>

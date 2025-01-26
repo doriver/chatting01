@@ -1,21 +1,58 @@
-let socket;
+const stompClient = new StompJs.Client({
+    brokerURL: 'ws://localhost:8080/chatRoom-v01-websocket'
+});
+
+stompClient.onConnect = (frame) => {
+    console.log('Connected: ' + frame);
+    stompClient.subscribe('/topic/chatRoom', (messageDTO) => {
+        const message = JSON.parse(messageDTO.body);
+
+        showGreeting(message.sender, message.content, message.sendedAt);
+    });
+};
+
+function sendMessage() {
+
+    var params = {
+        'sender': $("#userName").val()
+        ,'message': $("#message").val()  
+    }
+
+    stompClient.publish({
+        destination: "/app/hello",
+        body: JSON.stringify(params)
+    });
+}
+
+function showGreeting(sender, content, sendedAt) {
+    $("#greetings").append("<tr><td>" + sender + " : " + content + "( " + sendedAt + " )" + "</td></tr>");
+}
+
+
+stompClient.onWebSocketError = (error) => {
+    console.error('Error with websocket', error);
+};
+
+stompClient.onStompError = (frame) => {
+    console.error('Broker reported error: ' + frame.headers['message']);
+    console.error('Additional details: ' + frame.body);
+};
 
 function connect() {
-    socket = new WebSocket('ws://localhost:8080/echo2');
-
-    socket.onopen = () => {
-        console.log('connected');
-    }
-
-    socket.onmessage = (event) => {
-        console.log('message from server: ' + event.data);
-        // stomp를 써야할듯
-    }
-
-    socket.onclose = () => {
-        console.log('disconncected. ');
-    }
+    stompClient.activate();
 }
+
+function disconnect() {
+    stompClient.deactivate();
+    console.log("Disconnected");
+}
+
+$(function () {
+    $("form").on('submit', (e) => e.preventDefault());
+    $( "#connect" ).click(() => connect());
+    $( "#disconnect" ).click(() => disconnect());
+    $( "#send" ).click(() => sendMessage());
+});
 
 
 async function fetchChatItems() {

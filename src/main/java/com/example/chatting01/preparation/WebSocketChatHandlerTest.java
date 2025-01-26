@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Slf4j
-@Component // 클라이언트가 발송한 메시지 받아서 치리해줄 Handler
+//@Component // 클라이언트가 발송한 메시지 받아서 치리해줄 Handler
 public class WebSocketChatHandlerTest extends TextWebSocketHandler {
 
     private final Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<>());
