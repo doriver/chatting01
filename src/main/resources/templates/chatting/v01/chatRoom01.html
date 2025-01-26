@@ -78,6 +78,13 @@
                 <!--
                     <button onclick="fetchChatItems()">채팅 메시지들 불러오기</button>
                 -->
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="connect">WebSocket connection:</label>
+                        <button id="connect" type="submit">Connect</button>
+                        <button id="disconnect" type="submit" disabled="disabled">Disconnect</button>
+                    </div>
+                </form>
 
                 <div class="chat-window">
                     <!-- Header -->
@@ -95,35 +102,14 @@
 
                     
                     <!-- Chat Container가 동적으로 바뀜 -->
-                    <div class="chat-container" id="chatContainer">
-                        
+                    <div class="chat-container" >
+                        <div id="chatContainer">
+
+                        </div>
+                        <input class="form-control mt-2" type="text" id="messageInput" 
+                            placeholder="메시지 입력" onkeydown="handleEnterKey(event)">
                     </div>
                 </div>
-
-                <form class="form-inline">
-                    <div class="form-group">
-                        <label for="connect">WebSocket connection:</label>
-                        <button id="connect" type="submit">Connect</button>
-                        <button id="disconnect" type="submit" >Disconnect</button>
-                    </div>
-                </form>
-
-                <form class="form-inline">
-                    <div class="form-group">
-                        <label for="message">메시지 입력하세요</label>
-                        <input type="text" id="message" placeholder="Your message here...">
-                    </div>
-                    <button id="send" type="submit">Send</button>
-                </form>
-                <table id="conversation">
-                    <thead>
-                    <tr>
-                        <th>메시지</th>
-                    </tr>
-                    </thead>
-                    <tbody id="greetings">
-                    </tbody>
-                </table>
 
             </div>
         </div>

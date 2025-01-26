@@ -5,6 +5,7 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -22,6 +23,8 @@ public class WebSocketConfigV01 implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // 클라이언트는 해당 경로를 통해 WebSocket서버와 연결
         // 해당 경로에서 WebSocket연결을 수락
-        registry.addEndpoint("/chatRoom-v01-websocket");
+        registry.addEndpoint("/chatRoom-v01-websocket")
+                .addInterceptors(new HttpSessionHandshakeInterceptor()) // HTTP 세션 정보를 WebSocket 연결 시 가져오고, WebSocket 세션의 속성으로 저장
+        ;
     }
 }

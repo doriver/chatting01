@@ -3,11 +3,12 @@ const stompClient = new StompJs.Client({
 });
 
 stompClient.onConnect = (frame) => {
+    setConnected(true);
     console.log('Connected: ' + frame);
     stompClient.subscribe('/topic/chatRoom', (messageDTO) => {
         const message = JSON.parse(messageDTO.body);
 
-        showGreeting(message.sender, message.content, message.sendedAt);
+        showMessage(message.sender, message.content, message.sendedAt, message.isMine);
     });
 };
 
@@ -15,7 +16,7 @@ function sendMessage() {
 
     var params = {
         'sender': $("#userName").val()
-        ,'message': $("#message").val()  
+        ,'message': $("#messageInput").val()  
     }
 
     stompClient.publish({
@@ -24,8 +25,58 @@ function sendMessage() {
     });
 }
 
-function showGreeting(sender, content, sendedAt) {
-    $("#greetings").append("<tr><td>" + sender + " : " + content + "( " + sendedAt + " )" + "</td></tr>");
+function showMessage(sender, content, sendedAt, isMine) {
+    const chatContainer = document.getElementById("chatContainer");
+
+    const chatItemDiv = document.createElement("div");
+
+    if (isMine === 0) {
+        // 받은 메시지
+        chatItemDiv.innerHTML = `
+            <div>
+                <img src=""  width="28" style="border-radius: 30%">
+                <span style="font-size: 0.6rem;">${sender}</span>
+            </div>
+            <div class="message received">
+                <p>${content}</p>
+                <span style="font-size: 0.6rem;">${sendedAt}</span>
+            </div>
+        `;
+    } else {
+        // 보낸 메시지
+        chatItemDiv.innerHTML = `
+            <div class="message sent">
+                <span style="font-size: 0.6rem; margin-right: 3px;">
+                    ${sendedAt}
+                </span>
+                <p>${content}</p>
+            </div>
+        `;
+    }
+    chatContainer.appendChild(chatItemDiv);
+}
+
+function connect() {
+    stompClient.activate();
+}
+
+function disconnect() {
+    stompClient.deactivate();
+    setConnected(false);
+    console.log("Disconnected");
+}
+
+
+function setConnected(connected) {
+    $("#connect").prop("disabled", connected);
+    $("#disconnect").prop("disabled", !connected);
+    if (connected) {
+        $("#conversation").show();
+    }
+    else {
+        $("#conversation").hide();
+    }
+    $("#greetings").html("");
 }
 
 
@@ -38,14 +89,7 @@ stompClient.onStompError = (frame) => {
     console.error('Additional details: ' + frame.body);
 };
 
-function connect() {
-    stompClient.activate();
-}
 
-function disconnect() {
-    stompClient.deactivate();
-    console.log("Disconnected");
-}
 
 $(function () {
     $("form").on('submit', (e) => e.preventDefault());
@@ -53,6 +97,15 @@ $(function () {
     $( "#disconnect" ).click(() => disconnect());
     $( "#send" ).click(() => sendMessage());
 });
+
+
+
+function handleEnterKey(event) {
+	if (event.key === 'Enter') {
+		event.preventDefault();     // 줄바꿈 방지(기본 엔터 키 동작 방지)
+		sendMessage();
+	}
+}
 
 
 async function fetchChatItems() {
@@ -126,3 +179,4 @@ function updateChatContainer(chatItemsByDate) {
     // 스크롤을 가장 아래로 내리기
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
+

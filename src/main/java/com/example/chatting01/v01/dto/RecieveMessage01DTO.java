@@ -16,5 +16,7 @@ public class RecieveMessage01DTO {
     private String sender;
     private LocalDateTime sendedAt;
 
+    private int isMine; // 1: 내가쓴 글, 0: 상대방이 쓴 글
+
 
 }
