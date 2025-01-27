@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SendMessage02DTO {
     private String sender;
+    private long senderId;
     private String message;
 }

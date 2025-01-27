@@ -24,7 +24,8 @@ stompClient.onConnect = (frame) => {
 function sendMessage() {
     var params = {
         'sender': $("#userName").val()
-        ,'message': $("#messageInput").val()  
+        , 'senderId': $("#userId").val()
+        , 'message': $("#messageInput").val()  
     }
     var roomId = $("#roomId").val();
     stompClient.publish({
