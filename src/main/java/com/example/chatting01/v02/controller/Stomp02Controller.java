@@ -25,7 +25,7 @@ public class Stomp02Controller {
     @MessageMapping("/{roomId}")
     @SendTo("/chatRoom/{roomId}")
     public RecieveMessage02DTO hello(SendMessage02DTO sendMessage02DTO
-                                , @DestinationVariable long roomId) {
+                                , @DestinationVariable("roomId") long roomId) {
 
         String sender = sendMessage02DTO.getSender();
 

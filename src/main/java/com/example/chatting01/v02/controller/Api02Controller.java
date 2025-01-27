@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,26 @@ public class Api02Controller {
 
     @Autowired private GroupChatRoom01Repository groupChatRoom01Repository;
     @Autowired private Chatter01Repository chatter01Repository;
+
+    /*
+        채팅방 나가기
+     */
+    @PatchMapping("/rooms/{roomId}/{chatterId}")
+    @ResponseBody
+    public void exitRoom(@PathVariable("roomId") long roomId, @PathVariable("chatterId") long chatterId) {
+        GroupChatRoom01 chatRoom = groupChatRoom01Repository.findById(roomId).orElse(null);
+        User01 participant = user01Repository.findById(chatterId).orElse(null);
+
+        if (participant != null && chatRoom != null) {
+            Optional<Chatter01> attendance = chatter01Repository.findByChatterAndRoom(participant, chatRoom);
+            if (!attendance.isEmpty()) {
+                Chatter01 chatter01 = attendance.get();
+                chatter01.setExitTime(LocalDateTime.now()); // 여기까지하면 update될줄 알았는데, 안됨
+                chatter01Repository.save(chatter01);
+            }
+        }
+    }
+
 
     /*
         사용자 로그인

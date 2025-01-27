@@ -71,10 +71,32 @@ function connect() {
     stompClient.activate();
 }
 
-function disconnect() {
+async function disconnect() {
     stompClient.deactivate();
     setConnected(false);
     console.log("Disconnected");
+}
+
+function exitRoom() {
+
+    var roomId = $("#roomId").val();
+    var userId = $("#userId").val();
+
+    $.ajax({
+        type:"PATCH",
+        url:"/v02/api/rooms/" + roomId + "/" + userId,
+        success:async function(response) {
+            await disconnect();
+            location.href="/v02/list";
+        },
+        error:function(xhr) {
+            let response = xhr.responseJSON;
+            console.log(response);
+            alert("단톡방 나가기 실패 \n" + response.message);
+        }
+    });
+
+    
 }
 
 
