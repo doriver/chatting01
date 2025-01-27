@@ -6,6 +6,7 @@ import com.example.chatting01.v01.entity.User01;
 import com.example.chatting01.v02.dto.RecieveMessage02DTO;
 import com.example.chatting01.v02.dto.SendMessage02DTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -21,9 +22,10 @@ public class Stomp02Controller {
     @MessageMapping 메서드에서는 일반적인 HTTP기반의 HttpSession을 직접 주입받을 수 없다.
 
      */
-    @MessageMapping("/chat")
-    @SendTo("/topic/chatRoom")
-    public RecieveMessage02DTO hello(SendMessage02DTO sendMessage02DTO) {
+    @MessageMapping("/{roomId}")
+    @SendTo("/chatRoom/{roomId}")
+    public RecieveMessage02DTO hello(SendMessage02DTO sendMessage02DTO
+                                , @DestinationVariable long roomId) {
 
         String sender = sendMessage02DTO.getSender();
 

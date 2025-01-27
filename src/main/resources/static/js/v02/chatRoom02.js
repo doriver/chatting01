@@ -1,37 +1,34 @@
+
+
 const stompClient = new StompJs.Client({
     brokerURL: 'ws://localhost:8080/chatRoom-v02-websocket'
 });
-
-
 
 stompClient.onConnect = (frame) => {    
     setConnected(true);
     console.log('Connected: ' + frame);
 
     var loginUser = $("#userName").val();
-
+    var roomId = $("#roomId").val();
  
-    stompClient.subscribe('/topic/chatRoom', (messageDTO) => {
+    stompClient.subscribe('/chatRoom/' + roomId, (messageDTO) => {
         const message = JSON.parse(messageDTO.body);
-
         var isMine = 0;
         if (loginUser === message.sender) {
             isMine = 1;
         }
-
         showMessage(message.sender, message.content, message.sendedAt, isMine);
     });
 };
 
 function sendMessage() {
-
     var params = {
         'sender': $("#userName").val()
         ,'message': $("#messageInput").val()  
     }
-
+    var roomId = $("#roomId").val();
     stompClient.publish({
-        destination: "/app/chat",
+        destination: "/chatApp/" + roomId,
         body: JSON.stringify(params)
     });
 }

@@ -38,7 +38,8 @@
             <div class="col-3">
                 <h3><strong>단톡방 참석자 목록</strong></h3>
                 <hr>
-                    <input type="hidden" id="userName" th:value="${session.loginUser.userName}">
+                <input type="hidden" id="userName" th:value="${session.loginUser.userName}">
+                <input type="hidden" id="roomId" th:value="${room.roomid}">
                     <!--
                         <input type="hidden" id="chattingStatus" th:value="${session.chattingStatus}">
                         <input type="hidden" id="serverPort" th:value="${session.serverPort}">
