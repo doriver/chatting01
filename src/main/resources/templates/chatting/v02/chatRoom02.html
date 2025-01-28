@@ -81,7 +81,8 @@
                     <button onclick="fetchChatItems()">채팅 메시지들 불러오기</button>
                 -->
                 <button onclick="exitRoom()">채팅방 나가기</button>
-                <button>채팅방 종료하기(멘토 권한일 경우)</button>
+                <button th:if="${session.loginUser.role.name() == 'MENTOR'}" 
+                    onclick="endRoom()">채팅방 종료하기(멘토 권한일 경우)</button>
                 <form class="form-inline">
                     <div class="form-group">
                         <label for="connect">WebSocket connection:</label>
