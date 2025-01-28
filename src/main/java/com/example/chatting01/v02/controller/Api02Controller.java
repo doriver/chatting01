@@ -38,7 +38,7 @@ public class Api02Controller {
         User01 participant = user01Repository.findById(chatterId).orElse(null);
 
         if (participant != null && chatRoom != null) {
-            Optional<Chatter01> attendance = chatter01Repository.findByChatterAndRoom(participant, chatRoom);
+            Optional<Chatter01> attendance = chatter01Repository.findByChatterAndRoomAndExitTime(participant, chatRoom, null);
             if (!attendance.isEmpty()) {
                 Chatter01 chatter01 = attendance.get();
                 chatter01.setExitTime(LocalDateTime.now()); // 여기까지하면 update될줄 알았는데, 안됨
@@ -103,7 +103,7 @@ public class Api02Controller {
         User01 participant = user01Repository.findById(uid).orElse(null);
         // 로그인 여부까지 체크하면 좋음
 
-        Optional<Chatter01> attendance = chatter01Repository.findByChatterAndRoom(participant, chatRoom);
+        Optional<Chatter01> attendance = chatter01Repository.findByChatterAndRoomAndExitTime(participant, chatRoom, null);
 //        log.info(" =====   2   ======  어디까지 갈까?"); // 어디가 잘못됐는지 찾으려고 했던거 
         if (attendance.isEmpty()) {
             if (participant != null && chatRoom != null) {
