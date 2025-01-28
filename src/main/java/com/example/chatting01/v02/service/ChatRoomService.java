@@ -21,6 +21,27 @@ public class ChatRoomService {
     @Autowired private Chatter01Repository chatter01Repository;
 
     /*
+        개설자가 채팅방 종료
+     */
+    public void mentorEndRoom(long roomId) {
+        GroupChatRoom01 chatRoom = groupChatRoom01Repository.findById(roomId).orElse(null);
+        LocalDateTime endTime = LocalDateTime.now();
+
+        // 채팅방 종료시간 입력
+        chatRoom.setEndedAt(endTime);
+        groupChatRoom01Repository.save(chatRoom);
+
+        // 채팅방 참석자들 나가는 시간 입력
+        List<Chatter01> chatterList = chatter01Repository.findAllByRoomAndExitTime(chatRoom, null);
+        for (Chatter01 chatter : chatterList) {
+            chatter.setExitTime(endTime);
+        }
+        chatter01Repository.saveAll(chatterList);
+
+        // 채팅방에 연결된 웹소켓 통신 종료시키기
+    }
+
+    /*
         채팅방 참석자가, 해당방 나가는 기능
      */
     public void chatterExitRoom(long roomId, long chatterId) {
@@ -61,10 +82,10 @@ public class ChatRoomService {
     }
 
     /*
-        단체톡방들 select
+        아직 종료안된 단체톡방들 select
      */
     public List<GroupChatRoom01> getChatRoomList() {
-        List<GroupChatRoom01> roomList = groupChatRoom01Repository.findAll();
+        List<GroupChatRoom01> roomList = groupChatRoom01Repository.findAllByEndedAt(null);
         return roomList;
     }
 

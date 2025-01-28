@@ -37,12 +37,12 @@ public class Api02Controller {
     }
 
     /*
-        개설자가 채팅방 종료
+        채팅방 종료, 서버에서 클라이언트 웺소켓 종료하는거 시간 걸릴수도
      */
-    @PatchMapping("/rooms/{roomId}/{chatterId}")
+    @PatchMapping("/rooms/{roomId}")
     @ResponseBody
-    public void endRoom(@PathVariable("roomId") long roomId, @PathVariable("chatterId") long chatterId) {
-
+    public void endRoom(@PathVariable("roomId") long roomId) {
+        chatRoomService.mentorEndRoom(roomId);
     }
 
 

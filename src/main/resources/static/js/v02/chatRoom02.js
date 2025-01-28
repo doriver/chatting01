@@ -99,21 +99,27 @@ function exitRoom() {
 
 function endRoom() {
     var roomId = $("#roomId").val();
+   
     var userId = $("#userId").val();
+    var roomMentorId = $("#roomMentorId").val();
 
-    $.ajax({
-        type:"PATCH",
-        url:"/v02/api/rooms/" + roomId + "/" + userId,
-        success:async function(response) {
-            await disconnect();
-            location.href="/v02/list";
-        },
-        error:function(xhr) {
-            let response = xhr.responseJSON;
-            console.log(response);
-            alert("단톡방 나가기 실패 \n" + response.message);
-        }
-    });
+    if (userId === roomMentorId) {
+        $.ajax({
+            type:"PATCH",
+            url:"/v02/api/rooms/" + roomId ,
+            success:async function(response) {
+                await disconnect(); // spring에서 소켓연결 종료하는 쪽으로 바꿔야함
+                location.href="/v02/list";
+            },
+            error:function(xhr) {
+                let response = xhr.responseJSON;
+                console.log(response);
+                alert("단톡방 종료 실패 \n" + response.message);
+            }
+        });
+
+    }
+
 }
 
 

@@ -46,7 +46,6 @@ public class View02Controller {
         if (!room.isEmpty()) {
             List<Chatter01> chatterList = chatter01Repository.findAllByRoomAndExitTime(room.get(), null);
             model.addAttribute("chatterList", chatterList);
-
             model.addAttribute("room", room.get());
         }
 
