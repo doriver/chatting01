@@ -21,10 +21,39 @@ stompClient.onConnect = (frame) => {
     });
 
     stompClient.subscribe('/chatRoom/' + roomId + '/door', (message) => {
-        // 출입 표시
-        showDoor(message.body);
+        if (message.body === "DISCONNECT") {
+            disconnect();
+            alert("채팅방이 종료 되었습니다.");
+        } else {
+            // 출입 표시
+            showDoor(message.body);
+        }
+    });
+
+    stompClient.subscribe('/chatRoom/' + roomId + '/participants', (participantDTO) => {
+        const participant = JSON.parse(participantDTO.body);
+        updateParticipants(participant.chatterId, participant.chatterName, participant.access);
     });
 };
+
+function updateParticipants(chatterId, chatterName, access) {
+    const chattersTbody = document.getElementById("chatters");
+    if (access === 1) { // 입장
+        const newChatter = document.createElement("tr");
+        newChatter.className = "user-" + chatterId;
+        newChatter.innerHTML =`
+            <td style="text-align: center;"> 참석자 이미지 </td>
+            <td>${chatterName}</td>
+            <td style="text-align: right;">기타등등</td>
+        `;
+        chattersTbody.appendChild(newChatter);
+    } else if (access === 0) { // 퇴장
+        var exitChatter = chattersTbody.querySelector(".user-" + chatterId);
+        exitChatter.remove();
+    } else {
+        alert("참석자 업데이트 실패");
+    }
+}
 
 function sendMessage() {
     var params = {
@@ -123,7 +152,8 @@ function endRoom() {
             url:"/v02/api/rooms/" + roomId ,
             success:async function(response) {
                 await disconnect(); // spring에서 소켓연결 종료하는 쪽으로 바꿔야함
-                location.href="/v02/list";
+                alert("채팅방이 종료 되었습니다.");
+                // location.href="/v02/list";
             },
             error:function(xhr) {
                 let response = xhr.responseJSON;

@@ -65,8 +65,8 @@
                     </thead>
 
                     <!-- js파일에 있음, Chatter List( 동적으로 바뀜 ) -->
-                    <tbody>
-                        <tr th:each="user : ${chatterList}">
+                    <tbody id="chatters">
+                        <tr th:each="user : ${chatterList}" th:class="'user-' + ${user.ctrid}">
                             <td style="text-align: center;"> 참석자 이미지 </td>
                             <td th:text="${user.chatter.userName}">참석자 이름</td>
                             <td style="text-align: right;">기타등등</td>

@@ -6,6 +6,7 @@ import com.example.chatting01.v01.entity.User01;
 import com.example.chatting01.v01.repository.Chatter01Repository;
 import com.example.chatting01.v01.repository.GroupChatRoom01Repository;
 import com.example.chatting01.v01.repository.User01Repository;
+import com.example.chatting01.v02.dto.Participant02DTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,9 @@ public class ChatRoomService {
         }
         chatter01Repository.saveAll(chatterList);
 
-        // 채팅방에 연결된 웹소켓 통신 종료시키기
+        // 해당 방 종료 알리기( 채팅방에 연결된 웹소켓 통신 종료시키기 )
+        String destination = "/chatRoom/" + roomId + "/door";
+        messagingTemplate.convertAndSend(destination, "DISCONNECT");
     }
 
     /*
@@ -58,6 +61,21 @@ public class ChatRoomService {
                 Chatter01 chatter01 = attendance.get();
                 chatter01.setExitTime(LocalDateTime.now()); // 여기까지하면 update될줄 알았는데, 안됨
                 chatter01Repository.save(chatter01);
+
+                long chatter01Id = chatter01.getCtrid();
+                String chatterName = chatter01.getChatter().getUserName();
+
+                Participant02DTO participantDTO = Participant02DTO.builder()
+                        .chatterId(chatter01Id).chatterName(chatterName).access(0)
+                        .build();
+
+                // 해당 방 참석자 list 업데이트
+                messagingTemplate.convertAndSend(
+                        "/chatRoom/" + roomId + "/participants", participantDTO);
+
+                // 해당 방에 퇴장 알리기
+                String destination = "/chatRoom/" + roomId + "/door";
+                messagingTemplate.convertAndSend(destination, participant.getUserName() + "님이 퇴장했습니다.");
             }
         }
     }
@@ -78,11 +96,23 @@ public class ChatRoomService {
                 Chatter01 chatter = Chatter01.builder()
                         .room(chatRoom).chatter(participant)
                         .build();
-                chatter01Repository.save(chatter);
+                Chatter01 savedChatter = chatter01Repository.save(chatter);
+
+                long chatterId = savedChatter.getCtrid();
+                String chatterName = savedChatter.getChatter().getUserName();
+
+                Participant02DTO participantDTO = Participant02DTO.builder()
+                        .chatterId(chatterId).chatterName(chatterName).access(1)
+                        .build();
+
+                // 해당 방 참석자 list 업데이트
+                messagingTemplate.convertAndSend(
+                        "/chatRoom/" + rid + "/participants", participantDTO);
 
                 // 해당 방에 입장 알리기
-                String destination = "/chatRoom/" + rid + "/door";
-                messagingTemplate.convertAndSend(destination, participant.getUserName() + "님이 입장했습니다.");
+                messagingTemplate.convertAndSend(
+                        "/chatRoom/" + rid + "/door", chatterName + "님이 입장했습니다.");
+
             } else {
                 // throw new Exception();
             }
