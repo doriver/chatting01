@@ -36,8 +36,6 @@ public class Api02Controller {
             , RedirectAttributes reAtr) {
         chatRoomService.userEnterRoom(rid, uid);
 
-
-
         reAtr.addAttribute("rid", rid);
         return "redirect:/v02/chatRoom";
     }

@@ -24,7 +24,7 @@ public class ChatMessageService {
     public void saveMessage(long roomId, long senderId, String message) {
         User01 user01 = user01Repository.findById(senderId).orElse(null);
         GroupChatRoom01 chatRoom = groupChatRoom01Repository.findById(roomId).orElse(null);
-        Chatter01 chatter01 = chatter01Repository.findByChatterAndRoom(user01, chatRoom).orElse(null);
+        Chatter01 chatter01 = chatter01Repository.findByChatterAndRoomAndExitTime(user01, chatRoom, null).orElse(null);
 
         if (chatter01 != null && chatRoom != null) {
             ChatMessage01 dbChatMessage = ChatMessage01.builder()
