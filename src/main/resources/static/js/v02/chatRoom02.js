@@ -11,13 +11,18 @@ stompClient.onConnect = (frame) => {
     var loginUser = $("#userName").val();
     var roomId = $("#roomId").val();
  
-    stompClient.subscribe('/chatRoom/' + roomId, (messageDTO) => {
+    stompClient.subscribe('/chatRoom/' + roomId + '/message', (messageDTO) => {
         const message = JSON.parse(messageDTO.body);
         var isMine = 0;
         if (loginUser === message.sender) {
             isMine = 1;
         }
         showMessage(message.sender, message.content, message.sendedAt, isMine);
+    });
+
+    stompClient.subscribe('/chatRoom/' + roomId + '/door', (message) => {
+        // 출입 표시
+        showDoor(message.body);
     });
 };
 
@@ -32,6 +37,15 @@ function sendMessage() {
         destination: "/chatApp/" + roomId,
         body: JSON.stringify(params)
     });
+}
+
+function showDoor(message) {
+    const doorDiv = document.createElement("div");
+    doorDiv.className = "text-center mt-2 mb-3";
+    doorDiv.style.fontSize = "0.7rem";
+    doorDiv.style.backgroundColor = "lightgrey";
+    doorDiv.textContent = message;
+    chatContainer.appendChild(doorDiv);
 }
 
 function showMessage(sender, content, sendedAt, isMine) {

@@ -7,6 +7,7 @@ import com.example.chatting01.v01.repository.Chatter01Repository;
 import com.example.chatting01.v01.repository.GroupChatRoom01Repository;
 import com.example.chatting01.v01.repository.User01Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,9 @@ public class ChatRoomService {
     @Autowired private User01Repository user01Repository;
     @Autowired private GroupChatRoom01Repository groupChatRoom01Repository;
     @Autowired private Chatter01Repository chatter01Repository;
+
+    @Autowired private SimpMessagingTemplate messagingTemplate;
+
 
     /*
         개설자가 채팅방 종료
@@ -75,6 +79,10 @@ public class ChatRoomService {
                         .room(chatRoom).chatter(participant)
                         .build();
                 chatter01Repository.save(chatter);
+
+                // 해당 방에 입장 알리기
+                String destination = "/chatRoom/" + rid + "/door";
+                messagingTemplate.convertAndSend(destination, participant.getUserName() + "님이 입장했습니다.");
             } else {
                 // throw new Exception();
             }

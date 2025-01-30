@@ -33,7 +33,7 @@ public class Stomp02Controller {
         @MessageMapping 메서드에서는 일반적인 HTTP기반의 HttpSession을 직접 주입받을 수 없다.
      */
     @MessageMapping("/{roomId}")
-    @SendTo("/chatRoom/{roomId}")
+    @SendTo("/chatRoom/{roomId}/message")
     public RecieveMessage02DTO hello(SendMessage02DTO sendMessage02DTO
                                 , @DestinationVariable("roomId") long roomId) {
 
