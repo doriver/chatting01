@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GroupChatRoom01 {
+public class ChatRoom02 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long roomid;

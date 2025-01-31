@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChatMessage01 {
+public class ChatMessage02 {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +21,11 @@ public class ChatMessage01 {
 
     @ManyToOne
     @JoinColumn(name = "roomid")
-    private GroupChatRoom01 room;
+    private ChatRoom02 room;
 
     @ManyToOne
     @JoinColumn(name = "senderid")
-    private Chatter01 sender;
+    private ChatParticipant02 sender;
 
     private String message;
 

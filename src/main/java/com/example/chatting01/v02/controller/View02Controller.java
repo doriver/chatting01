@@ -1,11 +1,11 @@
 package com.example.chatting01.v02.controller;
 
-import com.example.chatting01.v02.entity.Chatter01;
-import com.example.chatting01.v02.entity.GroupChatRoom01;
+import com.example.chatting01.v02.entity.ChatParticipant02;
+import com.example.chatting01.v02.entity.ChatRoom02;
 import com.example.chatting01.v02.entity.Role;
 import com.example.chatting01.v02.entity.User01;
-import com.example.chatting01.v02.repository.Chatter01Repository;
-import com.example.chatting01.v02.repository.GroupChatRoom01Repository;
+import com.example.chatting01.v02.repository.ChatParticipant02Repository;
+import com.example.chatting01.v02.repository.ChatRoom02Repository;
 import com.example.chatting01.v02.repository.User01Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,8 +23,8 @@ public class View02Controller {
 
     @Autowired
     private User01Repository user01Repository;
-    @Autowired private Chatter01Repository chatter01Repository;
-    @Autowired private GroupChatRoom01Repository groupChatRoom01Repository;
+    @Autowired private ChatParticipant02Repository chatParticipant02Repository;
+    @Autowired private ChatRoom02Repository chatRoom02Repository;
 
     /*
         유저, 단톡방 목록 화면
@@ -41,10 +41,10 @@ public class View02Controller {
      */
     @RequestMapping("/chatRoom")
     public String aachr(@RequestParam("rid") long rid, Model model) {
-        Optional<GroupChatRoom01> room = groupChatRoom01Repository.findById(rid);
+        Optional<ChatRoom02> room = chatRoom02Repository.findById(rid);
 
         if (!room.isEmpty()) {
-            List<Chatter01> chatterList = chatter01Repository.findAllByRoomAndExitTime(room.get(), null);
+            List<ChatParticipant02> chatterList = chatParticipant02Repository.findAllByRoomAndExitTime(room.get(), null);
             model.addAttribute("chatterList", chatterList);
             model.addAttribute("room", room.get());
         }

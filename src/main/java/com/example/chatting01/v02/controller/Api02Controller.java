@@ -1,6 +1,6 @@
 package com.example.chatting01.v02.controller;
 
-import com.example.chatting01.v02.entity.GroupChatRoom01;
+import com.example.chatting01.v02.entity.ChatRoom02;
 import com.example.chatting01.v02.service.ChatRoomService;
 import com.example.chatting01.v02.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -76,7 +76,7 @@ public class Api02Controller {
      */
     @GetMapping("/rooms")
     @ResponseBody
-    public List<GroupChatRoom01> roomList() {
+    public List<ChatRoom02> roomList() {
         return chatRoomService.getChatRoomList();
     }
 

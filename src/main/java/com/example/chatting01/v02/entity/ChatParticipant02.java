@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Chatter01 {
+public class ChatParticipant02 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ctrid;
@@ -21,7 +21,7 @@ public class Chatter01 {
     // 소속된 단톡방
     @ManyToOne
     @JoinColumn(name = "roomid")
-    private GroupChatRoom01 room;
+    private ChatRoom02 room;
 
     // 참석자 이름
     @ManyToOne
