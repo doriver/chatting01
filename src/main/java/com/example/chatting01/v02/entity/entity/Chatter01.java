@@ -1,11 +1,10 @@
-package com.example.chatting01.v01.entity;
+package com.example.chatting01.v02.entity.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.User;
 
 import java.time.LocalDateTime;
 
@@ -27,7 +26,7 @@ public class Chatter01 {
     // 참석자 이름
     @ManyToOne
     @JoinColumn(name = "uid")
-    private User01 chatter;
+    private User01 perticipant;
 
     // 입장시간
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)

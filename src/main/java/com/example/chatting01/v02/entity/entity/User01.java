@@ -1,4 +1,4 @@
-package com.example.chatting01.v01.entity;
+package com.example.chatting01.v02.entity.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

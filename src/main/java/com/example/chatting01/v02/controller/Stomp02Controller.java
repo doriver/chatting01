@@ -2,14 +2,6 @@ package com.example.chatting01.v02.controller;
 
 import com.example.chatting01.v01.dto.RecieveMessage01DTO;
 import com.example.chatting01.v01.dto.SendMessage01DTO;
-import com.example.chatting01.v01.entity.ChatMessage01;
-import com.example.chatting01.v01.entity.Chatter01;
-import com.example.chatting01.v01.entity.GroupChatRoom01;
-import com.example.chatting01.v01.entity.User01;
-import com.example.chatting01.v01.repository.ChatMessage01Repository;
-import com.example.chatting01.v01.repository.Chatter01Repository;
-import com.example.chatting01.v01.repository.GroupChatRoom01Repository;
-import com.example.chatting01.v01.repository.User01Repository;
 import com.example.chatting01.v02.dto.RecieveMessage02DTO;
 import com.example.chatting01.v02.dto.SendMessage02DTO;
 import com.example.chatting01.v02.service.ChatMessageService;
@@ -18,11 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Controller
 @Slf4j

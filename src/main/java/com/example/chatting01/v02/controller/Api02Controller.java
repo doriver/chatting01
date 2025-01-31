@@ -1,24 +1,16 @@
 package com.example.chatting01.v02.controller;
 
-import com.example.chatting01.v01.entity.Chatter01;
-import com.example.chatting01.v01.entity.GroupChatRoom01;
-import com.example.chatting01.v01.entity.User01;
-import com.example.chatting01.v01.repository.Chatter01Repository;
-import com.example.chatting01.v01.repository.GroupChatRoom01Repository;
-import com.example.chatting01.v01.repository.User01Repository;
+import com.example.chatting01.v02.entity.entity.GroupChatRoom01;
 import com.example.chatting01.v02.service.ChatRoomService;
 import com.example.chatting01.v02.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller

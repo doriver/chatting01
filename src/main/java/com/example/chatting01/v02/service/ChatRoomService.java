@@ -1,11 +1,11 @@
 package com.example.chatting01.v02.service;
 
-import com.example.chatting01.v01.entity.Chatter01;
-import com.example.chatting01.v01.entity.GroupChatRoom01;
-import com.example.chatting01.v01.entity.User01;
-import com.example.chatting01.v01.repository.Chatter01Repository;
-import com.example.chatting01.v01.repository.GroupChatRoom01Repository;
-import com.example.chatting01.v01.repository.User01Repository;
+import com.example.chatting01.v02.entity.entity.Chatter01;
+import com.example.chatting01.v02.entity.entity.GroupChatRoom01;
+import com.example.chatting01.v02.entity.entity.User01;
+import com.example.chatting01.v02.repository.repository.Chatter01Repository;
+import com.example.chatting01.v02.repository.repository.GroupChatRoom01Repository;
+import com.example.chatting01.v02.repository.repository.User01Repository;
 import com.example.chatting01.v02.dto.Participant02DTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -63,7 +63,7 @@ public class ChatRoomService {
                 chatter01Repository.save(chatter01);
 
                 long chatter01Id = chatter01.getCtrid();
-                String chatterName = chatter01.getChatter().getUserName();
+                String chatterName = chatter01.getPerticipant().getUserName();
 
                 Participant02DTO participantDTO = Participant02DTO.builder()
                         .chatterId(chatter01Id).chatterName(chatterName).access(0)
@@ -90,12 +90,12 @@ public class ChatRoomService {
         if (attendance.isEmpty()) {
             if (participant != null && chatRoom != null) {
                 Chatter01 chatter = Chatter01.builder()
-                        .room(chatRoom).chatter(participant)
+                        .room(chatRoom).perticipant(participant)
                         .build();
                 Chatter01 savedChatter = chatter01Repository.save(chatter);
 
                 long chatterId = savedChatter.getCtrid();
-                String chatterName = savedChatter.getChatter().getUserName();
+                String chatterName = savedChatter.getPerticipant().getUserName();
 
                 Participant02DTO participantDTO = Participant02DTO.builder()
                         .chatterId(chatterId).chatterName(chatterName).access(1)
