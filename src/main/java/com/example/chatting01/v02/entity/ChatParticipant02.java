@@ -16,25 +16,25 @@ import java.time.LocalDateTime;
 public class ChatParticipant02 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ctrid;
+    private long id;
 
     // 소속된 단톡방
     @ManyToOne
-    @JoinColumn(name = "roomid")
+    @JoinColumn(name = "room_id")
     private ChatRoom02 room;
 
     // 참석자 이름
     @ManyToOne
-    @JoinColumn(name = "uid")
+    @JoinColumn(name = "user_id")
     private User01 chatter;
 
     // 입장시간
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)
-    private LocalDateTime enterTime;
+    private LocalDateTime enterAt;
 
     // 퇴장시간
     @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime exitTime;
+    private LocalDateTime exitAt;
 
     // 참여정도
 //    @Enumerated(EnumType.ORDINAL)

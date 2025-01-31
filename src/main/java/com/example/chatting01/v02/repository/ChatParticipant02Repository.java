@@ -12,10 +12,10 @@ import java.util.Optional;
 public interface ChatParticipant02Repository extends JpaRepository<ChatParticipant02, Long> {
 
     Optional<ChatParticipant02> findByChatterAndRoom(User01 chatter, ChatRoom02 room);
-    Optional<ChatParticipant02> findByChatterAndRoomAndExitTime(User01 chatter, ChatRoom02 room, LocalDateTime exitTime);
+    Optional<ChatParticipant02> findByChatterAndRoomAndExitAt(User01 chatter, ChatRoom02 room, LocalDateTime exitTime);
 
     Optional<ChatParticipant02> findByChatter(User01 chatter);
 
-    List<ChatParticipant02> findAllByRoomAndExitTime(ChatRoom02 room, LocalDateTime exitTime);
+    List<ChatParticipant02> findAllByRoomAndExitAt(ChatRoom02 room, LocalDateTime exitTime);
     // 단톡방 현재 참석자들 가져오는거 : exitTime = null
 }

@@ -37,9 +37,9 @@ public class ChatRoomService {
         chatRoom02Repository.save(chatRoom);
 
         // 채팅방 참석자들 나가는 시간 입력
-        List<ChatParticipant02> chatterList = chatParticipant02Repository.findAllByRoomAndExitTime(chatRoom, null);
+        List<ChatParticipant02> chatterList = chatParticipant02Repository.findAllByRoomAndExitAt(chatRoom, null);
         for (ChatParticipant02 chatter : chatterList) {
-            chatter.setExitTime(endTime);
+            chatter.setExitAt(endTime);
         }
         chatParticipant02Repository.saveAll(chatterList);
 
@@ -56,13 +56,13 @@ public class ChatRoomService {
         User01 participant = user01Repository.findById(chatterId).orElse(null);
 
         if (participant != null && chatRoom != null) {
-            Optional<ChatParticipant02> attendance = chatParticipant02Repository.findByChatterAndRoomAndExitTime(participant, chatRoom, null);
+            Optional<ChatParticipant02> attendance = chatParticipant02Repository.findByChatterAndRoomAndExitAt(participant, chatRoom, null);
             if (!attendance.isEmpty()) {
                 ChatParticipant02 chatParticipant02 = attendance.get();
-                chatParticipant02.setExitTime(LocalDateTime.now()); // 여기까지하면 update될줄 알았는데, 안됨
+                chatParticipant02.setExitAt(LocalDateTime.now()); // 여기까지하면 update될줄 알았는데, 안됨
                 chatParticipant02Repository.save(chatParticipant02);
 
-                long chatter01Id = chatParticipant02.getCtrid();
+                long chatter01Id = chatParticipant02.getId();
                 String chatterName = chatParticipant02.getChatter().getUserName();
 
                 Participant02DTO participantDTO = Participant02DTO.builder()
@@ -86,7 +86,7 @@ public class ChatRoomService {
         User01 participant = user01Repository.findById(uid).orElse(null);
         // 로그인 여부까지 체크하면 좋음
 
-        Optional<ChatParticipant02> attendance = chatParticipant02Repository.findByChatterAndRoomAndExitTime(participant, chatRoom, null);
+        Optional<ChatParticipant02> attendance = chatParticipant02Repository.findByChatterAndRoomAndExitAt(participant, chatRoom, null);
         if (attendance.isEmpty()) {
             if (participant != null && chatRoom != null) {
                 ChatParticipant02 chatter = ChatParticipant02.builder()
@@ -94,7 +94,7 @@ public class ChatRoomService {
                         .build();
                 ChatParticipant02 savedChatter = chatParticipant02Repository.save(chatter);
 
-                long chatterId = savedChatter.getCtrid();
+                long chatterId = savedChatter.getId();
                 String chatterName = savedChatter.getChatter().getUserName();
 
                 Participant02DTO participantDTO = Participant02DTO.builder()

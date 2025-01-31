@@ -44,7 +44,7 @@ public class View02Controller {
         Optional<ChatRoom02> room = chatRoom02Repository.findById(rid);
 
         if (!room.isEmpty()) {
-            List<ChatParticipant02> chatterList = chatParticipant02Repository.findAllByRoomAndExitTime(room.get(), null);
+            List<ChatParticipant02> chatterList = chatParticipant02Repository.findAllByRoomAndExitAt(room.get(), null);
             model.addAttribute("chatterList", chatterList);
             model.addAttribute("room", room.get());
         }
