@@ -69,13 +69,9 @@ public class ChatRoomService {
                         .chatterId(chatter01Id).chatterName(chatterName).access(0)
                         .build();
 
-                // 해당 방 참석자 list 업데이트
-                messagingTemplate.convertAndSend(
-                        "/chatRoom/" + roomId + "/participants", participantDTO);
-
                 // 해당 방에 퇴장 알리기
                 String destination = "/chatRoom/" + roomId + "/door";
-                messagingTemplate.convertAndSend(destination, participant.getUserName() + "님이 퇴장했습니다.");
+                messagingTemplate.convertAndSend(destination, participantDTO);
             }
         }
     }
@@ -105,13 +101,9 @@ public class ChatRoomService {
                         .chatterId(chatterId).chatterName(chatterName).access(1)
                         .build();
 
-                // 해당 방 참석자 list 업데이트
-                messagingTemplate.convertAndSend(
-                        "/chatRoom/" + rid + "/participants", participantDTO);
-
                 // 해당 방에 입장 알리기
                 messagingTemplate.convertAndSend(
-                        "/chatRoom/" + rid + "/door", chatterName + "님이 입장했습니다.");
+                        "/chatRoom/" + rid + "/door", participantDTO);
 
             } else {
                 // throw new Exception();

@@ -21,18 +21,16 @@ stompClient.onConnect = (frame) => {
     });
 
     stompClient.subscribe('/chatRoom/' + roomId + '/door', (message) => {
-        if (message.body === "DISCONNECT") {
+        if (message.body === "DISCONNECT") { // 멘토가 해당 채팅방 종료
             disconnect();
             alert("채팅방이 종료 되었습니다.");
         } else {
-            // 출입 표시
-            showDoor(message.body);
+            const participant = JSON.parse(message.body);
+            // 참석자 목록 업데이트
+            updateParticipants(participant.chatterId, participant.chatterName, participant.access);
+            // 채팅방에 출입 메시지
+            showDoor(participant.chatterName, participant.access);
         }
-    });
-
-    stompClient.subscribe('/chatRoom/' + roomId + '/participants', (participantDTO) => {
-        const participant = JSON.parse(participantDTO.body);
-        updateParticipants(participant.chatterId, participant.chatterName, participant.access);
     });
 };
 
@@ -68,11 +66,19 @@ function sendMessage() {
     });
 }
 
-function showDoor(message) {
+function showDoor(chatterName, access) {
     const doorDiv = document.createElement("div");
     doorDiv.className = "text-center mt-2 mb-3";
     doorDiv.style.fontSize = "0.7rem";
     doorDiv.style.backgroundColor = "lightgrey";
+
+    var message;
+    if (access === 1) { // 입장
+        message = chatterName + "님이 입장했습니다."
+    } else if (access === 0) { // 퇴장
+        message = chatterName + "님이 퇴장했습니다."
+    }
+
     doorDiv.textContent = message;
     chatContainer.appendChild(doorDiv);
 }
@@ -150,15 +156,11 @@ function endRoom() {
         $.ajax({
             type:"PATCH",
             url:"/v02/api/rooms/" + roomId ,
-            success:async function(response) {
-                await disconnect(); // spring에서 소켓연결 종료하는 쪽으로 바꿔야함
-                alert("채팅방이 종료 되었습니다.");
-                // location.href="/v02/list";
-            },
+            success:async function(response) { },
             error:function(xhr) {
                 let response = xhr.responseJSON;
                 console.log(response);
-                alert("단톡방 종료 실패 \n" + response.message);
+                alert("단톡방 종료 오류발생 \n" + response.message);
             }
         });
 
