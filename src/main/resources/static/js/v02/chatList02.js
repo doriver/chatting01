@@ -45,6 +45,11 @@ function updateRoomList(roomList, loginId) {
 
 $(document).ready(function() {
 
+    // $("form").on('submit', (e) => e.preventDefault());
+    // $( "#connect" ).click(() => connect());
+    // $( "#disconnect" ).click(() => disconnect());
+    // $( "#send" ).click(() => sendMessage());
+
     $(".loginBtn").on("click", function() {
         var userId = $(this).data("user-id");
     

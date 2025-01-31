@@ -53,9 +53,8 @@ function socketSetting() {
         console.error('Broker reported error: ' + frame.headers['message']);
         console.error('Additional details: ' + frame.body);
     };
-}
 
-function connect() {
+    // 연결
     stompClient.activate();
 }
 
@@ -181,18 +180,18 @@ function endRoom() {
     }
 }
 
-
 function setConnected(connected) {
-    $("#connect").prop("disabled", connected);
-    $("#disconnect").prop("disabled", !connected);
-    if (connected) {
-        $("#conversation").show();
-    }
-    else {
-        $("#conversation").hide();
-    }
+    // $("#connect").prop("disabled", connected);
+    // $("#disconnect").prop("disabled", !connected);
+    // if (connected) {
+    //     $("#conversation").show();
+    // }
+    // else {
+    //     $("#conversation").hide();
+    // }
     // $("#greetings").html("");
 }
+
 
 function handleEnterKey(event) {
 	if (event.key === 'Enter') {
@@ -201,12 +200,14 @@ function handleEnterKey(event) {
 	}
 }
 
+
+
 $(document).ready(function() {
-    $("form").on('submit', (e) => e.preventDefault());
-    $( "#connect" ).click(() => connect());
-    $( "#disconnect" ).click(() => disconnect());
-    $( "#send" ).click(() => sendMessage());
+    console.log("$doc ready func");
 
     socketSetting();
+    
+
+    console.log(" == end $doc ready func");
 
 })

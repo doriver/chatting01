@@ -19,11 +19,7 @@
     
     <link href="/css/chatRoom01.css" rel="stylesheet">
     <script src="/js/v02/chatRoom02.js"></script>
-    <script>
-        window.onload = () => {
-            connect();
-        }
-    </script>
+    
 </head>
 <body>
     <h1>단톡방</h1>
@@ -85,13 +81,6 @@
                 <button onclick="exitRoom()">채팅방 나가기</button>
                 <button th:if="${session.loginUser.uid == room.mentor.uid}" 
                     onclick="endRoom()">채팅방 종료하기([[${session.loginUser.role.name()}]])</button>
-                <form class="form-inline">
-                    <div class="form-group">
-                        <label for="connect">WebSocket connection:</label>
-                        <button id="connect" type="submit">Connect</button>
-                        <button id="disconnect" type="submit" disabled="disabled">Disconnect</button>
-                    </div>
-                </form>
 
                 <div class="chat-window">
                     <!-- Header -->
