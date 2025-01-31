@@ -129,7 +129,7 @@ public class ChatRoomService {
 
         if (mentor != null && mentor.getRole().name() == "MENTOR") {
             ChatRoom02 room = ChatRoom02.builder()
-                    .mentor(mentor).roomName(roomName).limitNumber(userLimit)
+                    .mentor(mentor).roomName(roomName).userLimit(userLimit)
                     .build();
             chatRoom02Repository.save(room);
         } else {

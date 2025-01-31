@@ -16,18 +16,18 @@ import java.time.LocalDateTime;
 public class ChatRoom02 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long roomid;
+    private long id;
 
     // 단톡방 개설자
     @ManyToOne
-    @JoinColumn(name = "uid")
+    @JoinColumn(name = "mento_id")
     private User01 mentor;
 
     // 단톡방 이름
     private String roomName;
 
     // 참여 제한 인원
-    private int limitNumber;
+    private int userLimit;
 
     // 생성 시간
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)
