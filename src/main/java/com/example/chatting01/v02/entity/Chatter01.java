@@ -26,7 +26,7 @@ public class Chatter01 {
     // 참석자 이름
     @ManyToOne
     @JoinColumn(name = "uid")
-    private User01 perticipant;
+    private User01 chatter;
 
     // 입장시간
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)

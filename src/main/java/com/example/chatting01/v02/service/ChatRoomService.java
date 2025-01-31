@@ -63,7 +63,7 @@ public class ChatRoomService {
                 chatter01Repository.save(chatter01);
 
                 long chatter01Id = chatter01.getCtrid();
-                String chatterName = chatter01.getPerticipant().getUserName();
+                String chatterName = chatter01.getChatter().getUserName();
 
                 Participant02DTO participantDTO = Participant02DTO.builder()
                         .chatterId(chatter01Id).chatterName(chatterName).access(0)
@@ -90,12 +90,12 @@ public class ChatRoomService {
         if (attendance.isEmpty()) {
             if (participant != null && chatRoom != null) {
                 Chatter01 chatter = Chatter01.builder()
-                        .room(chatRoom).perticipant(participant)
+                        .room(chatRoom).chatter(participant)
                         .build();
                 Chatter01 savedChatter = chatter01Repository.save(chatter);
 
                 long chatterId = savedChatter.getCtrid();
-                String chatterName = savedChatter.getPerticipant().getUserName();
+                String chatterName = savedChatter.getChatter().getUserName();
 
                 Participant02DTO participantDTO = Participant02DTO.builder()
                         .chatterId(chatterId).chatterName(chatterName).access(1)
