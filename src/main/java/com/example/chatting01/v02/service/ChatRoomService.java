@@ -1,11 +1,11 @@
 package com.example.chatting01.v02.service;
 
-import com.example.chatting01.v02.entity.entity.Chatter01;
-import com.example.chatting01.v02.entity.entity.GroupChatRoom01;
-import com.example.chatting01.v02.entity.entity.User01;
-import com.example.chatting01.v02.repository.repository.Chatter01Repository;
-import com.example.chatting01.v02.repository.repository.GroupChatRoom01Repository;
-import com.example.chatting01.v02.repository.repository.User01Repository;
+import com.example.chatting01.v02.entity.Chatter01;
+import com.example.chatting01.v02.entity.GroupChatRoom01;
+import com.example.chatting01.v02.entity.User01;
+import com.example.chatting01.v02.repository.Chatter01Repository;
+import com.example.chatting01.v02.repository.GroupChatRoom01Repository;
+import com.example.chatting01.v02.repository.User01Repository;
 import com.example.chatting01.v02.dto.Participant02DTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

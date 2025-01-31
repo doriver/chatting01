@@ -1,12 +1,12 @@
 package com.example.chatting01.v02.controller;
 
-import com.example.chatting01.v02.entity.entity.Chatter01;
-import com.example.chatting01.v02.entity.entity.GroupChatRoom01;
-import com.example.chatting01.v02.entity.entity.Role;
-import com.example.chatting01.v02.entity.entity.User01;
-import com.example.chatting01.v02.repository.repository.Chatter01Repository;
-import com.example.chatting01.v02.repository.repository.GroupChatRoom01Repository;
-import com.example.chatting01.v02.repository.repository.User01Repository;
+import com.example.chatting01.v02.entity.Chatter01;
+import com.example.chatting01.v02.entity.GroupChatRoom01;
+import com.example.chatting01.v02.entity.Role;
+import com.example.chatting01.v02.entity.User01;
+import com.example.chatting01.v02.repository.Chatter01Repository;
+import com.example.chatting01.v02.repository.GroupChatRoom01Repository;
+import com.example.chatting01.v02.repository.User01Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

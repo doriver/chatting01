@@ -1,7 +1,5 @@
 package com.example.chatting01.v02.controller;
 
-import com.example.chatting01.v01.dto.RecieveMessage01DTO;
-import com.example.chatting01.v01.dto.SendMessage01DTO;
 import com.example.chatting01.v02.dto.RecieveMessage02DTO;
 import com.example.chatting01.v02.dto.SendMessage02DTO;
 import com.example.chatting01.v02.service.ChatMessageService;

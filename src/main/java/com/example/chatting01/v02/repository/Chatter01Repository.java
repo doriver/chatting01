@@ -1,8 +1,8 @@
-package com.example.chatting01.v02.repository.repository;
+package com.example.chatting01.v02.repository;
 
-import com.example.chatting01.v02.entity.entity.Chatter01;
-import com.example.chatting01.v02.entity.entity.GroupChatRoom01;
-import com.example.chatting01.v02.entity.entity.User01;
+import com.example.chatting01.v02.entity.Chatter01;
+import com.example.chatting01.v02.entity.GroupChatRoom01;
+import com.example.chatting01.v02.entity.User01;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
