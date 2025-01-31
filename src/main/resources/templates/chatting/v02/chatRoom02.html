@@ -37,7 +37,7 @@
                 <input type="hidden" id="userName" th:value="${session.loginUser.userName}">
                 <input type="hidden" id="userId" th:value="${session.loginUser.uid}">
                 <input type="hidden" id="userRole" th:value="${session.loginUser.role.name()}">
-                <input type="hidden" id="roomId" th:value="${room.roomid}">
+                <input type="hidden" id="roomId" th:value="${room.id}">
                 <input type="hidden" id="roomMentorId" th:value="${room.mentor.uid}">
                     <!--
                         <input type="hidden" id="chattingStatus" th:value="${session.chattingStatus}">
@@ -62,7 +62,7 @@
 
                     <!-- js파일에 있음, Chatter List( 동적으로 바뀜 ) -->
                     <tbody id="chatters">
-                        <tr th:each="user : ${chatterList}" th:class="'user-' + ${user.ctrid}">
+                        <tr th:each="user : ${chatterList}" th:class="'user-' + ${user.id}">
                             <td style="text-align: center;"> 참석자 이미지 </td>
                             <td th:text="${user.chatter.userName}">참석자 이름</td>
                             <td style="text-align: right;">기타등등</td>
@@ -73,7 +73,7 @@
             </div>
 
             <div class="col-8">
-                <h3><strong>단톡방: [[${room.roomName}]] , 제한인원 [[${room.limitNumber}]]</strong></h3>
+                <h3><strong>단톡방: [[${room.roomName}]] , 제한인원 [[${room.userLimit}]]</strong></h3>
                 <hr>
                 <!--
                     <button onclick="fetchChatItems()">채팅 메시지들 불러오기</button>
@@ -86,7 +86,7 @@
                     <!-- Header -->
                     <div class="header d-flex justify-content-between py-3">
                         <div>
-                            <a href="/chatting/home"><i class="fa-solid fa-arrow-left mx-2" style="color: white;"></i></a>
+                            <a href="/v02/list"><i class="fa-solid fa-arrow-left mx-2" style="color: white;"></i></a>
                             <span style="font-weight: bold;">[[${room.roomName}]]</span>
                         </div>
                         <div>

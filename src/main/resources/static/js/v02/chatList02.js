@@ -29,11 +29,11 @@ function updateRoomList(roomList, loginId) {
             </td>
             <td style="text-align: center;">
                 <span style="font-size: 0.8rem;">
-                     ${room.limitNumber}
+                     ${room.userLimit}
                 </span>
             </td>
             <td>
-                <form action="/v02/api/participant/${room.roomid}/${loginId}" 
+                <form action="/v02/api/participant/${room.id}/${loginId}" 
                     method="post">
                     <button type="submit"> 단톡 참석 </button>
                 </form>
