@@ -17,14 +17,14 @@ public class ChatMessage02 {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long cmid;
+    private long id;
 
     @ManyToOne
-    @JoinColumn(name = "roomid")
+    @JoinColumn(name = "room_id")
     private ChatRoom02 room;
 
     @ManyToOne
-    @JoinColumn(name = "senderid")
+    @JoinColumn(name = "participant_id")
     private ChatParticipant02 sender;
 
     private String message;
