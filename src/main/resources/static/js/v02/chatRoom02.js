@@ -1,38 +1,77 @@
+let stompClient;
+let loginUserName, userId; // 로그인한 사용자 정보
+let roomMentorId, roomId; // 단톡방 정보
 
-
-const stompClient = new StompJs.Client({
-    brokerURL: 'ws://localhost:8080/chatRoom-v02-websocket'
-});
-
-stompClient.onConnect = (frame) => {    
-    setConnected(true);
-    console.log('Connected: ' + frame);
-
-    var loginUser = $("#userName").val();
-    var roomId = $("#roomId").val();
- 
-    stompClient.subscribe('/chatRoom/' + roomId + '/message', (messageDTO) => {
-        const message = JSON.parse(messageDTO.body);
-        var isMine = 0;
-        if (loginUser === message.sender) {
-            isMine = 1;
-        }
-        showMessage(message.sender, message.content, message.sendedAt, isMine);
+function socketSetting() {
+    stompClient = new StompJs.Client({ // 웹소켓 url
+        brokerURL: 'ws://localhost:8080/chatRoom-v02-websocket'
     });
 
-    stompClient.subscribe('/chatRoom/' + roomId + '/door', (message) => {
-        if (message.body === "DISCONNECT") { // 멘토가 해당 채팅방 종료
-            disconnect();
-            alert("채팅방이 종료 되었습니다.");
-        } else {
-            const participant = JSON.parse(message.body);
-            // 참석자 목록 업데이트
-            updateParticipants(participant.chatterId, participant.chatterName, participant.access);
-            // 채팅방에 출입 메시지
-            showDoor(participant.chatterName, participant.access);
-        }
+    // 로그인한 사용자 정보 
+    loginUserName = $("#userName").val();
+    userId = $("#userId").val();
+
+    // 단톡방 정보
+    roomId = $("#roomId").val();
+    roomMentorId = $("#roomMentorId").val();
+
+    // WebSocket연결 성공 시 호출됨
+    stompClient.onConnect = (frame) => {    
+        setConnected(true);
+        console.log('Connected: ' + frame);
+    
+        // 채팅 메시지 구독
+        stompClient.subscribe('/chatRoom/' + roomId + '/message', (messageDTO) => {
+            const message = JSON.parse(messageDTO.body);
+            var isMine = 0;
+            if (loginUserName === message.sender) {
+                isMine = 1;
+            }
+            showMessage(message.sender, message.content, message.sendedAt, isMine);
+        });
+    
+        // 채팅방 출입+종료 정보 구독
+        stompClient.subscribe('/chatRoom/' + roomId + '/door', (message) => {
+            if (message.body === "DISCONNECT") { // 멘토가 해당 채팅방 종료
+                disconnect();
+                alert("채팅방이 종료 되었습니다.");
+            } else {
+                const participant = JSON.parse(message.body);
+                // 참석자 목록 업데이트
+                updateParticipants(participant.chatterId, participant.chatterName, participant.access);
+                // 채팅방에 출입 메시지
+                showDoor(participant.chatterName, participant.access);
+            }
+        });
+    };
+
+    stompClient.onWebSocketError = (error) => {
+        console.error('Error with websocket', error);
+    };
+    
+    stompClient.onStompError = (frame) => {
+        console.error('Broker reported error: ' + frame.headers['message']);
+        console.error('Additional details: ' + frame.body);
+    };
+}
+
+function connect() {
+    stompClient.activate();
+}
+
+
+function sendMessage() {
+    var params = {
+        'sender': loginUserName
+        , 'senderId': userId
+        , 'message': $("#messageInput").val()  
+    }
+
+    stompClient.publish({
+        destination: "/chatApp/" + roomId,
+        body: JSON.stringify(params)
     });
-};
+}
 
 function updateParticipants(chatterId, chatterName, access) {
     const chattersTbody = document.getElementById("chatters");
@@ -53,19 +92,6 @@ function updateParticipants(chatterId, chatterName, access) {
     }
 }
 
-function sendMessage() {
-    var params = {
-        'sender': $("#userName").val()
-        , 'senderId': $("#userId").val()
-        , 'message': $("#messageInput").val()  
-    }
-    var roomId = $("#roomId").val();
-    stompClient.publish({
-        destination: "/chatApp/" + roomId,
-        body: JSON.stringify(params)
-    });
-}
-
 function showDoor(chatterName, access) {
     const doorDiv = document.createElement("div");
     doorDiv.className = "text-center mt-2 mb-3";
@@ -78,7 +104,6 @@ function showDoor(chatterName, access) {
     } else if (access === 0) { // 퇴장
         message = chatterName + "님이 퇴장했습니다."
     }
-
     doorDiv.textContent = message;
     chatContainer.appendChild(doorDiv);
 }
@@ -87,7 +112,6 @@ function showMessage(sender, content, sendedAt, isMine) {
     const chatContainer = document.getElementById("chatContainer");
 
     const chatItemDiv = document.createElement("div");
-
     if (isMine === 0) {
         // 받은 메시지
         chatItemDiv.innerHTML = `
@@ -117,9 +141,6 @@ function showMessage(sender, content, sendedAt, isMine) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-function connect() {
-    stompClient.activate();
-}
 
 async function disconnect() {
     stompClient.deactivate();
@@ -128,8 +149,6 @@ async function disconnect() {
 }
 
 function exitRoom() {
-    var roomId = $("#roomId").val();
-    var userId = $("#userId").val();
 
     $.ajax({
         type:"PATCH",
@@ -147,11 +166,7 @@ function exitRoom() {
 }
 
 function endRoom() {
-    var roomId = $("#roomId").val();
-   
-    var userId = $("#userId").val();
-    var roomMentorId = $("#roomMentorId").val();
-
+    
     if (userId === roomMentorId) {
         $.ajax({
             type:"PATCH",
@@ -163,9 +178,7 @@ function endRoom() {
                 alert("단톡방 종료 오류발생 \n" + response.message);
             }
         });
-
     }
-
 }
 
 
@@ -178,29 +191,8 @@ function setConnected(connected) {
     else {
         $("#conversation").hide();
     }
-    $("#greetings").html("");
+    // $("#greetings").html("");
 }
-
-
-stompClient.onWebSocketError = (error) => {
-    console.error('Error with websocket', error);
-};
-
-stompClient.onStompError = (frame) => {
-    console.error('Broker reported error: ' + frame.headers['message']);
-    console.error('Additional details: ' + frame.body);
-};
-
-
-
-$(function () {
-    $("form").on('submit', (e) => e.preventDefault());
-    $( "#connect" ).click(() => connect());
-    $( "#disconnect" ).click(() => disconnect());
-    $( "#send" ).click(() => sendMessage());
-});
-
-
 
 function handleEnterKey(event) {
 	if (event.key === 'Enter') {
@@ -209,3 +201,12 @@ function handleEnterKey(event) {
 	}
 }
 
+$(document).ready(function() {
+    $("form").on('submit', (e) => e.preventDefault());
+    $( "#connect" ).click(() => connect());
+    $( "#disconnect" ).click(() => disconnect());
+    $( "#send" ).click(() => sendMessage());
+
+    socketSetting();
+
+})
