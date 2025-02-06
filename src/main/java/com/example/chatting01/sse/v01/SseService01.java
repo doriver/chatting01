@@ -1,6 +1,5 @@
-package com.example.chatting01.sse;
+package com.example.chatting01.sse.v01;
 
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -9,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
-public class SseService {
+public class SseService01 {
     /*
      * 주로 순회가 일어나는 용도로 사용할 때는 안전한 스레드 처리를 위해 CopyOnWriteArrayList를 사용
      */
@@ -21,7 +20,7 @@ public class SseService {
         emitter.onTimeout(() -> emitters.remove(emitter));
     }
 
-    @Scheduled(fixedDelay = 1000) // 1초마다 실행
+//    @Scheduled(fixedDelay = 1000) // 1초마다 실행
     public void sendEvents() {
         for (SseEmitter emitter : emitters) {
             try {

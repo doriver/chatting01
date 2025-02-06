@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- jQuery( JavaScript 라이브러리 ) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<h1>Server-Sent Events (SSE) with Spring</h1>
+<button onclick="sseTest()">SSE 테스트</button>
+
+<script>
+    const connectId = "123";  // 접속 ID
+    const eventSource = new EventSource(`http://localhost:8080/sse/subscribe/${connectId}`);
+
+    eventSource.addEventListener("message", (event) => {
+        alert( event.data);
+        console.log("Received message:", event.data);
+    });
+
+    // 연결 종료 시 재연결 (선택 사항)
+    eventSource.onerror = () => {
+        console.log("SSE connection lost. Reconnecting...");
+        setTimeout(() => {
+            eventSource.close();
+            eventSource = new EventSource(`http://localhost:8080/sse/subscribe/${connectId}`);
+        }, 3000);
+    };
+
+    function sseTest() {
+        $.ajax({
+        type:"GET",
+        url:"/sse/test",
+        success: function(response) {
+           
+        },
+        error:function(xhr) {
+            let response = xhr.responseJSON;
+            console.log(response);
+            alert("에러발생 \n" + response.message);
+        }
+    });
+    }
+</script>
+</body>
+</html>
