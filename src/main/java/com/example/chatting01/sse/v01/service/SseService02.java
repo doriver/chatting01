@@ -8,11 +8,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/*
-    enterRoom() 실행시 이벤트 전송
- */
 @Service
-@RequiredArgsConstructor
 public class SseService02 {
 
     private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
