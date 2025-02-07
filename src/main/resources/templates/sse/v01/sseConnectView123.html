@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Server-Sent Events 123 Connect</h1>
+<script>
+    const connectId = "123";  // 접속 ID
+    const eventSource = new EventSource(`/sse/connect/02/${connectId}`);
+
+    eventSource.addEventListener("message", (event) => {
+        alert( event.data);
+        console.log("Received message:", event.data);
+    });
+
+    // 연결 종료 시 재연결 (선택 사항)
+    eventSource.onerror = () => {
+        console.log("SSE connection lost. Reconnecting...");
+        setTimeout(() => {
+            eventSource.close();
+            eventSource = new EventSource(`/sse/connect/02/${connectId}`);
+        }, 3000);
+    };
+
+</script>
+</body>
+</html>

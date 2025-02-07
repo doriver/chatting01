@@ -1,4 +1,4 @@
-package com.example.chatting01.sse.v01;
+package com.example.chatting01.sse.v01.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -9,9 +9,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class SseService01 {
-    /*
-     * 주로 순회가 일어나는 용도로 사용할 때는 안전한 스레드 처리를 위해 CopyOnWriteArrayList를 사용
-     */
+
+    // 주로 순회가 일어나는 용도로 사용할 때는 안전한 스레드 처리를 위해 CopyOnWriteArrayList를 사용
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
     public void addEmitter(SseEmitter emitter) {

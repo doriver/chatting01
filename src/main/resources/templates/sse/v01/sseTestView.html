@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- jQuery( JavaScript 라이브러리 ) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<h1>SSE trigger View</h1>
+<input type="text" id="con" placeholder="전송할 id">
+<button onclick="sseTest()">SSE 테스트</button>
+
+<script>
+    function sseTest() {
+
+        var connectId = $("#con").val();
+
+        $.ajax({
+            type:"GET",
+            url:`/sse/test/${connectId}`,
+            success: function(response) {},
+            error:function(xhr) {
+                let response = xhr.responseJSON;
+                console.log(response);
+                alert("에러발생 \n" + response.message);
+            }
+        });
+    }
+</script>
+</body>
+</html>

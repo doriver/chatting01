@@ -6,12 +6,13 @@
 </head>
 <body>
 <h1>Server-Sent Events (SSE) with Spring</h1>
+<h3>@Scheduled 로 자동으로 받았던 화면</h3>
 <div id="events"></div>
 
 <script>
-    const eventSource = new EventSource("/emitter");//controller 경로
+    const eventSource = new EventSource("/emitter"); // controller 경로
 
-    eventSource.onmessage = (event) => { //데이터를 받아옴
+    eventSource.onmessage = (event) => { // 데이터를 받아옴
         const div = document.createElement("div");
         div.textContent = `Event received: ${event.data}`;
         document.getElementById("events").appendChild(div);
