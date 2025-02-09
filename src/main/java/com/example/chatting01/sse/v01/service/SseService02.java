@@ -19,6 +19,7 @@ public class SseService02 {
         emitter.onTimeout(() -> emitters.remove(connectId));
     }
 
+    // 특정 id에게 보내기
     public void sendEvent(String connectId, String message) {
         SseEmitter emitter = emitters.get(connectId);
         if (emitter != null) {
@@ -26,6 +27,21 @@ public class SseService02 {
                 emitter.send(SseEmitter.event().name("message").data(message));
             } catch (IOException e) {
                 emitters.remove(connectId);
+            }
+        }
+    }
+
+    // 서버에 연결된 모든 클라이언트에게 보내기
+    public void sendEventBroad(String message) {
+        for (String key : emitters.keySet()) {
+
+            SseEmitter emitter = emitters.get(key);
+            if (emitter != null) {
+                try {
+                    emitter.send(SseEmitter.event().name("message").data(message));
+                } catch (IOException e) {
+                    emitters.remove(key);
+                }
             }
         }
     }

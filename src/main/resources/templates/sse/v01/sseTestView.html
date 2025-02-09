@@ -12,14 +12,29 @@
 <input type="text" id="con" placeholder="전송할 id">
 <button onclick="sseTest()">SSE 테스트</button>
 
+<button onclick="sseBroad()">연결된 모든이에게 sse</button>
+
 <script>
     function sseTest() {
-
         var connectId = $("#con").val();
 
         $.ajax({
             type:"GET",
             url:`/sse/test/${connectId}`,
+            success: function(response) {},
+            error:function(xhr) {
+                let response = xhr.responseJSON;
+                console.log(response);
+                alert("에러발생 \n" + response.message);
+            }
+        });
+    }
+
+    function sseBroad() {
+
+        $.ajax({
+            type:"GET",
+            url:`/sse/test/redis`,
             success: function(response) {},
             error:function(xhr) {
                 let response = xhr.responseJSON;
